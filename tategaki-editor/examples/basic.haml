@@ -1,0 +1,14 @@
+!!! 5
+%html
+  %head  
+    %title= "縦書エディタ"
+    %script(type="text/javascript" src="../js/jquery-2.1.1.min.js")
+    %script(type="text/javascript" src="../js/tategaki-editor.js")
+    %link(rel="stylesheet" type="text/css" href="../css/tategaki.css") 
+  %body(onload="editor = new TategakiEditor('tategaki', {keisen: true})")
+    %h1 縦書きエディタ
+    %iframe(designMode="on")
+      %html
+        %head
+        %body()
+          #tategaki{"style"=>"width: 60%; height: 300px; border: 1px solid black;" }

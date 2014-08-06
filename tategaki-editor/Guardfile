@@ -1,0 +1,7 @@
+guard :shell do
+  watch(/^(.+)\.haml$/) do |m|
+    puts "generating #{m}.html..."
+    `haml #{m[1]}.haml > #{m[1]}.html`
+  end
+  
+end

@@ -1,0 +1,16 @@
+!!!!! 5
+%html
+  %head
+    %title= "縦書きエディタ"
+    %meta(http-Equiv="Cache-Control" Content="no-cache")
+    %meta(http-Equiv="Pragma" Content="no-cache")
+    %meta(http-Equiv="Expires" Content="0")
+    %meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+    %script(src="./js/jquery-2.1.1.min.js")
+    %script{"src"=>"./tategaki.js"}
+  %body
+    %h1 縦書きエディタ（開発中）
+    %div
+      %button#ruby ルビ文字
+      %button#markup マークアップ
+    %iframe#tategaki(style="width: 600px; height: 500px")
