@@ -7,6 +7,16 @@ $(document).ready ->
   $("#markup").click ->
     tagName = window.prompt "タグ名を入力してください", "strong"
     window.tategakiEditor.markup(tagName)
+
+  $("#remove-markup").click ->
+    window.tategakiEditor.removeMarkup()
+    window.tategakiEditor.resetElementSelection()
+    
+
+  $("#link").click ->
+    url = window.prompt "URLを入力してください", "http://google.com"
+    window.tategakiEditor.makeLink(url)
+    
     
   
 
@@ -33,6 +43,10 @@ class TategakiEditor
     @bindKeyEventHandlers()
 
   bindKeyEventHandlers: ->
+    # @editor.on "focus", (e) =>
+    #   @resetElementSelection()
+    #   $(@selectedElement()).addClass "selected"
+    
     @editor.on "keydown", (e) =>
       switch e.keyCode
         when 38
@@ -50,9 +64,16 @@ class TategakiEditor
         when 39
           @moveCaretToPrevLine()
           e.stopPropagation()
-          e.preventDefault()
+          e.preventDefault()          
 
+    @editor.on "keydown click focus", =>
+      @highlightSelected()
 
+  highlightSelected: ->      
+    @resetElementSelection()
+    @selected = $(@selectedElement())
+    @selected.addClass "selected" unless @selected.hasClass("tategaki-column")
+          
   markup: (elemName, attrs={}) ->
     sel = @doc.getSelection()
     range = sel.getRangeAt(0)
@@ -66,7 +87,9 @@ class TategakiEditor
       sel.addRange(range)
     catch e
       alert "行をまたぐマークアップはできません"
-    
+
+  makeLink: (url) ->
+    @markup("a", href: url)          
 
   ruby: (furigana) ->
     sel = @doc.getSelection()
@@ -83,7 +106,13 @@ class TategakiEditor
       sel.addRange(range)
     catch e
       alert "行をまたぐルビは付けられません"
-  
+
+  removeMarkup: ->
+    return null if @selected.hasClass("tategaki-column")
+    console.log @selected
+    @selected.contents().unwrap()
+    @selected = null
+      
   moveCaretToNextLine: ->
     # キャレットをy座標はそのままに次の行に移動
     return unless next = @nextColumn()
@@ -216,7 +245,9 @@ class TategakiEditor
     p
 
   selectedElement: ->
-    @doc.getSelection().focusNode.parentNode
-
-  getSelection: ->
-    @doc.getSelection()
+    return null unless @editor.is(":focus")    
+    node = @doc.getSelection().focusNode
+    if node.nodeType is 1 then node else node.parentElement
+  
+  resetElementSelection: ->
+    @editor.find(".selected").removeClass("selected")

@@ -9,10 +9,19 @@
       furigana = window.prompt("ルビ文字を入力してください", "もじもじ");
       return window.tategakiEditor.ruby(furigana);
     });
-    return $("#markup").click(function() {
+    $("#markup").click(function() {
       var tagName;
       tagName = window.prompt("タグ名を入力してください", "strong");
       return window.tategakiEditor.markup(tagName);
+    });
+    $("#remove-markup").click(function() {
+      window.tategakiEditor.removeMarkup();
+      return window.tategakiEditor.resetElementSelection();
+    });
+    return $("#link").click(function() {
+      var url;
+      url = window.prompt("URLを入力してください", "http://google.com");
+      return window.tategakiEditor.makeLink(url);
     });
   });
 
@@ -50,7 +59,7 @@
     };
 
     TategakiEditor.prototype.bindKeyEventHandlers = function() {
-      return this.editor.on("keydown", (function(_this) {
+      this.editor.on("keydown", (function(_this) {
         return function(e) {
           switch (e.keyCode) {
             case 38:
@@ -72,6 +81,19 @@
           }
         };
       })(this));
+      return this.editor.on("keydown click focus", (function(_this) {
+        return function() {
+          return _this.highlightSelected();
+        };
+      })(this));
+    };
+
+    TategakiEditor.prototype.highlightSelected = function() {
+      this.resetElementSelection();
+      this.selected = $(this.selectedElement());
+      if (!this.selected.hasClass("tategaki-column")) {
+        return this.selected.addClass("selected");
+      }
     };
 
     TategakiEditor.prototype.markup = function(elemName, attrs) {
@@ -99,6 +121,12 @@
       }
     };
 
+    TategakiEditor.prototype.makeLink = function(url) {
+      return this.markup("a", {
+        href: url
+      });
+    };
+
     TategakiEditor.prototype.ruby = function(furigana) {
       var e, furiganaElem, furiganaText, range, rubyElem, sel;
       sel = this.doc.getSelection();
@@ -119,6 +147,15 @@
         e = _error;
         return alert("行をまたぐルビは付けられません");
       }
+    };
+
+    TategakiEditor.prototype.removeMarkup = function() {
+      if (this.selected.hasClass("tategaki-column")) {
+        return null;
+      }
+      console.log(this.selected);
+      this.selected.contents().unwrap();
+      return this.selected = null;
     };
 
     TategakiEditor.prototype.moveCaretToNextLine = function() {
@@ -321,11 +358,20 @@
     };
 
     TategakiEditor.prototype.selectedElement = function() {
-      return this.doc.getSelection().focusNode.parentNode;
+      var node;
+      if (!this.editor.is(":focus")) {
+        return null;
+      }
+      node = this.doc.getSelection().focusNode;
+      if (node.nodeType === 1) {
+        return node;
+      } else {
+        return node.parentElement;
+      }
     };
 
-    TategakiEditor.prototype.getSelection = function() {
-      return this.doc.getSelection();
+    TategakiEditor.prototype.resetElementSelection = function() {
+      return this.editor.find(".selected").removeClass("selected");
     };
 
     return TategakiEditor;
