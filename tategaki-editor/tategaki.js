@@ -18,10 +18,13 @@
       window.tategakiEditor.removeMarkup();
       return window.tategakiEditor.resetElementSelection();
     });
-    return $("#link").click(function() {
+    $("#link").click(function() {
       var url;
       url = window.prompt("URLを入力してください", "http://google.com");
       return window.tategakiEditor.makeLink(url);
+    });
+    return $("#source").click(function() {
+      return alert(tategakiEditor.getHtmlSource());
     });
   });
 
@@ -92,6 +95,10 @@
       if (!this.selected.hasClass("tategaki-column")) {
         return this.selected.addClass("selected");
       }
+    };
+
+    TategakiEditor.prototype.getHtmlSource = function() {
+      return $(this.editor).html();
     };
 
     TategakiEditor.prototype.markup = function(elemName, attrs) {

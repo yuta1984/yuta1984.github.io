@@ -12,12 +12,12 @@ $(document).ready ->
     window.tategakiEditor.removeMarkup()
     window.tategakiEditor.resetElementSelection()
     
-
   $("#link").click ->
     url = window.prompt "URLを入力してください", "http://google.com"
     window.tategakiEditor.makeLink(url)
-    
-    
+
+  $("#source").click ->    
+    alert tategakiEditor.getHtmlSource()
   
 
 class TategakiEditor  
@@ -66,12 +66,16 @@ class TategakiEditor
           e.preventDefault()          
 
     @editor.on "keydown click focus", =>
-      @highlightSelected()
+      @highlightSelected()      
 
   highlightSelected: ->      
     @resetElementSelection()
     @selected = $(@selectedElement())
     @selected.addClass "selected" unless @selected.hasClass("tategaki-column")
+
+  getHtmlSource: ->
+    $(@editor).html()
+
           
   markup: (elemName, attrs={}) ->
     sel = @doc.getSelection()
