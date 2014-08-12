@@ -3,7 +3,6 @@
   var TategakiEditor;
 
   $(document).ready(function() {
-    window.tategakiEditor = new TategakiEditor("#tategaki");
     $("#ruby").click(function() {
       var furigana;
       furigana = window.prompt("ルビ文字を入力してください", "ふりがな");

@@ -1,5 +1,5 @@
 $(document).ready ->  
-  window.tategakiEditor = new TategakiEditor("#tategaki")
+  
   $("#ruby").click ->
     furigana = window.prompt "ルビ文字を入力してください", "ふりがな"
     window.tategakiEditor.ruby(furigana)
@@ -63,8 +63,8 @@ class TategakiEditor
         when 39
           @moveCaretToPrevLine()
           e.stopPropagation()
-          e.preventDefault()          
-
+          e.preventDefault()
+          
     @editor.on "keydown click focus", =>
       @highlightSelected()      
 
@@ -75,7 +75,6 @@ class TategakiEditor
 
   getHtmlSource: ->
     $(@editor).html()
-
           
   markup: (elemName, attrs={}) ->
     sel = @doc.getSelection()
