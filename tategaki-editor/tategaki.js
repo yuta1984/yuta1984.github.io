@@ -382,4 +382,6 @@
 
   })();
 
+  window.TategakiEditor = TategakiEditor;
+
 }).call(this);

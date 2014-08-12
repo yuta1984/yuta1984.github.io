@@ -17,8 +17,7 @@ $(document).ready ->
     window.tategakiEditor.makeLink(url)
 
   $("#source").click ->    
-    alert tategakiEditor.getHtmlSource()
-  
+    alert tategakiEditor.getHtmlSource()  
 
 class TategakiEditor  
   constructor: (iframeId, options={}) ->
@@ -253,3 +252,5 @@ class TategakiEditor
   
   resetElementSelection: ->
     @editor.find(".selected").removeClass("selected")
+
+window.TategakiEditor = TategakiEditor
