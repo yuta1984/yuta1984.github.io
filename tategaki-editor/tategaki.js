@@ -44,8 +44,8 @@
       this.doc = iframe[0].contentWindow.document;
       this.head = $('head', this.doc);
       this.body = $('body', this.doc);
-      cssLink = $('<link rel="stylesheet" type="text/css" href="http://yuta1984.github.io/tategaki-editor/tategaki.css"/>');
-      this.editor = $('<div contenteditable class="tategaki-editor"></div> widht="100%" height="100%"').height(this.body.height());
+      cssLink = $('<link rel="stylesheet" type="text/css" href="resources/css/tategaki.css"/>');
+      this.editor = $('<div contenteditable class="tategaki-editor" widht="100%" height="100%"></div>').height(this.body.height());
       col = $('<div class="tategaki-column"><ruby class="">色<rt class="">いろ</rt></ruby>は<ruby class="">匂<rt class="">にほ</rt></ruby>えど <ruby class="">散<rt class="">ち</rt></ruby>りぬるを <ruby class="">我<rt>わ</rt></ruby>が<ruby class="">世<rt class="">よ</rt></ruby><ruby class="">誰<rt>たれ</rt></ruby>ぞ <ruby class="">常<rt class="">つね</rt></ruby>ならん</div><div class="tategaki-column"><ruby class="selected">有為<rt class="">うゐ</rt></ruby>の<ruby class="">奥山<rt class="">おくやま</rt></ruby> <ruby class="">今日<rt class="">けふ</rt></ruby><ruby class="">越<rt class="">こ</rt></ruby>えて <ruby class="">浅<rt class="">あさ</rt></ruby>き<ruby class="">夢<rt class="">ゆめ</rt></ruby><ruby class="">見<rt class="">み</rt></ruby>し <ruby class="">酔<rt class="">よ</rt></ruby>ひもせす</div>');
       this.editor.append(col);
       this.head.append(cssLink);

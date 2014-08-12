@@ -1,0 +1,10 @@
+# -*- coding: utf-8 -*-
+
+task :download do
+  url = "http://archive.wul.waseda.ac.jp/kosho/wo01/wo01_03755/wo01_03755_0002/wo01_03755_0002_p00%02d.jpg"
+  1.upto(23) do |i|
+    sh "wget #{url%i}"
+  end
+end
+
+
