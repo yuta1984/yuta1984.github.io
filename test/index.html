@@ -22,13 +22,7 @@ html, body {height: 100%; width: 100%;}
 <!-- SCRIPTS -->
 <!-- Example: <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
 <script>  
-  body = document.getElementsByTagName("body")[0];
-  console.log(body);
-  body.addEventListener("mousemove", function(e){
-  document.getElementById("x").innerHTML = "x: "+ e.screenX
-  document.getElementById("y").innerHTML = "y: "+ e.screenY
-  }, false);
-  body.addEventListener("click", function(e){
+  cocument.addEventListener("mousemove", function(e){
   document.getElementById("x").innerHTML = "x: "+ e.screenX
   document.getElementById("y").innerHTML = "y: "+ e.screenY
   }, false);
