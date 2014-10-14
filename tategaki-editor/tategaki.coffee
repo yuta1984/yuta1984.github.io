@@ -1,24 +1,3 @@
-$(document).ready ->  
-  
-  $("#ruby").click ->
-    furigana = window.prompt "ルビ文字を入力してください", "ふりがな"
-    window.tategakiEditor.ruby(furigana)
-
-  $("#markup").click ->
-    tagName = window.prompt "タグ名を入力してください", "strong"
-    window.tategakiEditor.markup(tagName)
-
-  $("#remove-markup").click ->
-    window.tategakiEditor.removeMarkup()
-    window.tategakiEditor.resetElementSelection()
-    
-  $("#link").click ->
-    url = window.prompt "URLを入力してください", "http://google.com"
-    window.tategakiEditor.makeLink(url)
-
-  $("#source").click ->    
-    alert tategakiEditor.getHtmlSource()  
-
 class TategakiEditor  
   constructor: (iframeId, options={}) ->
     @iframeId = iframeId
@@ -26,30 +5,37 @@ class TategakiEditor
     @colWidth = options["colWidth"] or 15
     @render()
 
+  # pub/sub
+  on: (event, callback) ->
+    @eventListeners = {} unless @eventListeners
+    unless @eventListeners.hasOwnProperty(event)
+      @eventListeners[event] = []
+    @eventListeners[event].push(callback)
+
+  fireEvent: (event, args) ->
+    if @eventListeners.hasOwnProperty(event)
+      try 
+        for listener in @eventListeners[event]
+          listener.call(null, args)
+      catch e
+        console.error(e)
+
   render: ->
-    iframe = $(@iframeId)
-    @doc = iframe[0].contentWindow.document
+    @doc = document.getElementById(@iframeId).contentWindow.document
     @head = $('head', @doc)
-    @body = $('body', @doc)
-    
+    @body = $('body', @doc)        
     cssLink = $('<link rel="stylesheet" type="text/css" href="resources/css/tategaki.css"/>')
     @editor = $('<div contenteditable class="tategaki-editor" widht="100%" height="100%"></div>').height(@body.height())
-    col = $('<div class="tategaki-column"><ruby class="">色<rt class="">いろ</rt></ruby>は<ruby class="">匂<rt class="">にほ</rt></ruby>えど <ruby class="">散<rt class="">ち</rt></ruby>りぬるを <ruby class="">我<rt>わ</rt></ruby>が<ruby class="">世<rt class="">よ</rt></ruby><ruby class="">誰<rt>たれ</rt></ruby>ぞ <ruby class="">常<rt class="">つね</rt></ruby>ならん</div><div class="tategaki-column"><ruby class="selected">有為<rt class="">うゐ</rt></ruby>の<ruby class="">奥山<rt class="">おくやま</rt></ruby> <ruby class="">今日<rt class="">けふ</rt></ruby><ruby class="">越<rt class="">こ</rt></ruby>えて <ruby class="">浅<rt class="">あさ</rt></ruby>き<ruby class="">夢<rt class="">ゆめ</rt></ruby><ruby class="">見<rt class="">み</rt></ruby>し <ruby class="">酔<rt class="">よ</rt></ruby>ひもせす</div>')
-    @editor.append col
     @head.append cssLink 
     @body.append @editor
     @editor.resize (e) => console.log e
     @bindKeyEventHandlers()
 
   bindKeyEventHandlers: ->
-    # @editor.on "focus", (e) =>
-    #   @resetElementSelection()
-    #   $(@selectedElement()).addClass "selected"
-    
     @editor.on "keydown", (e) =>
       switch e.keyCode
         when 38
-          @moveCaretToPrevChar()
+          @movecarettoprevchar()
           e.stopPropagation()          
           e.preventDefault()
         when 40
@@ -65,13 +51,23 @@ class TategakiEditor
           e.stopPropagation()
           e.preventDefault()
           
+    @editor.on "keyup", (e) =>
+      @fireEvent "change", e
+          
     @editor.on "keydown click focus", =>
-      @highlightSelected()      
+      @highlightSelected()
+
+    @editor.on "contextmenu", (e) =>
+      @fireEvent "contextmenu", e
+
+    @editor.on "mousedown", (e) =>
+      @fireEvent "mousedown", e
 
   highlightSelected: ->      
     @resetElementSelection()
     @selected = $(@selectedElement())
     @selected.addClass "selected" unless @selected.hasClass("tategaki-column")
+    @fireEvent "element:selected", @selectedElement()
 
   getHtmlSource: ->
     $(@editor).html()
@@ -88,33 +84,33 @@ class TategakiEditor
       sel.removeAllRanges()
       sel.addRange(range)
     catch e
-      alert "行をまたぐマークアップはできません"
+      console.log e
+      throw "selection not markupable"
 
   makeLink: (url) ->
     @markup("a", href: url)          
 
-  ruby: (furigana) ->
+  ruby: (furigana, attrs={}) ->
     sel = @doc.getSelection()
     range = sel.getRangeAt(0)
     return if range.collapsed
     rubyElem = @doc.createElement("ruby")
-    try
-      range.surroundContents(rubyElem)
-      furiganaText = @doc.createTextNode(furigana)
-      furiganaElem = @doc.createElement("rt")
-      furiganaElem.appendChild(furiganaText)
-      rubyElem.appendChild(furiganaElem)
-      sel.removeAllRanges()
-      sel.addRange(range)
-    catch e
-      alert "行をまたぐルビは付けられません"
+    console.log range
+    range.surroundContents(rubyElem)
+    furiganaText = @doc.createTextNode(furigana)
+    furiganaElem = @doc.createElement("rt")
+    furiganaElem.appendChild(furiganaText)
+    rubyElem.appendChild(furiganaElem)
+    for key, val of attrs
+      rubyElem.setAttribute(key, val)
+    sel.removeAllRanges()
+    sel.addRange(range)
 
   removeMarkup: ->
     return null if @selected.hasClass("tategaki-column")
-    console.log @selected
     @selected.contents().unwrap()
     @selected = null
-      
+
   moveCaretToNextLine: ->
     # キャレットをy座標はそのままに次の行に移動
     return unless next = @nextColumn()
@@ -249,9 +245,19 @@ class TategakiEditor
   selectedElement: ->
     return null unless @editor.is(":focus")    
     node = @doc.getSelection().focusNode
-    if node.nodeType is 1 then node else node.parentElement
+    elem = if node.nodeType is 1 then node else node.parentElement
+    elem
+    
   
   resetElementSelection: ->
     @editor.find(".selected").removeClass("selected")
 
+  source: (s)->
+    @editor.html(s)
+
+  getIframeOffset: ->
+    $("##{@iframeId}").offset()
+
 window.TategakiEditor = TategakiEditor
+
+

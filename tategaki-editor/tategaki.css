@@ -36,3 +36,7 @@ body {
     color: red;
     font-weight: bold;    
 }
+
+.tei-element {
+    background-color: yellow;
+}

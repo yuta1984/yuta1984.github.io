@@ -2,31 +2,6 @@
 (function() {
   var TategakiEditor;
 
-  $(document).ready(function() {
-    $("#ruby").click(function() {
-      var furigana;
-      furigana = window.prompt("ルビ文字を入力してください", "ふりがな");
-      return window.tategakiEditor.ruby(furigana);
-    });
-    $("#markup").click(function() {
-      var tagName;
-      tagName = window.prompt("タグ名を入力してください", "strong");
-      return window.tategakiEditor.markup(tagName);
-    });
-    $("#remove-markup").click(function() {
-      window.tategakiEditor.removeMarkup();
-      return window.tategakiEditor.resetElementSelection();
-    });
-    $("#link").click(function() {
-      var url;
-      url = window.prompt("URLを入力してください", "http://google.com");
-      return window.tategakiEditor.makeLink(url);
-    });
-    return $("#source").click(function() {
-      return alert(tategakiEditor.getHtmlSource());
-    });
-  });
-
   TategakiEditor = (function() {
     function TategakiEditor(iframeId, options) {
       if (options == null) {
@@ -38,16 +13,41 @@
       this.render();
     }
 
+    TategakiEditor.prototype.on = function(event, callback) {
+      if (!this.eventListeners) {
+        this.eventListeners = {};
+      }
+      if (!this.eventListeners.hasOwnProperty(event)) {
+        this.eventListeners[event] = [];
+      }
+      return this.eventListeners[event].push(callback);
+    };
+
+    TategakiEditor.prototype.fireEvent = function(event, args) {
+      var e, listener, _i, _len, _ref, _results;
+      if (this.eventListeners.hasOwnProperty(event)) {
+        try {
+          _ref = this.eventListeners[event];
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            listener = _ref[_i];
+            _results.push(listener.call(null, args));
+          }
+          return _results;
+        } catch (_error) {
+          e = _error;
+          return console.error(e);
+        }
+      }
+    };
+
     TategakiEditor.prototype.render = function() {
-      var col, cssLink, iframe;
-      iframe = $(this.iframeId);
-      this.doc = iframe[0].contentWindow.document;
+      var cssLink;
+      this.doc = document.getElementById(this.iframeId).contentWindow.document;
       this.head = $('head', this.doc);
       this.body = $('body', this.doc);
       cssLink = $('<link rel="stylesheet" type="text/css" href="resources/css/tategaki.css"/>');
       this.editor = $('<div contenteditable class="tategaki-editor" widht="100%" height="100%"></div>').height(this.body.height());
-      col = $('<div class="tategaki-column"><ruby class="">色<rt class="">いろ</rt></ruby>は<ruby class="">匂<rt class="">にほ</rt></ruby>えど <ruby class="">散<rt class="">ち</rt></ruby>りぬるを <ruby class="">我<rt>わ</rt></ruby>が<ruby class="">世<rt class="">よ</rt></ruby><ruby class="">誰<rt>たれ</rt></ruby>ぞ <ruby class="">常<rt class="">つね</rt></ruby>ならん</div><div class="tategaki-column"><ruby class="selected">有為<rt class="">うゐ</rt></ruby>の<ruby class="">奥山<rt class="">おくやま</rt></ruby> <ruby class="">今日<rt class="">けふ</rt></ruby><ruby class="">越<rt class="">こ</rt></ruby>えて <ruby class="">浅<rt class="">あさ</rt></ruby>き<ruby class="">夢<rt class="">ゆめ</rt></ruby><ruby class="">見<rt class="">み</rt></ruby>し <ruby class="">酔<rt class="">よ</rt></ruby>ひもせす</div>');
-      this.editor.append(col);
       this.head.append(cssLink);
       this.body.append(this.editor);
       this.editor.resize((function(_this) {
@@ -63,7 +63,7 @@
         return function(e) {
           switch (e.keyCode) {
             case 38:
-              _this.moveCaretToPrevChar();
+              _this.movecarettoprevchar();
               e.stopPropagation();
               return e.preventDefault();
             case 40:
@@ -81,9 +81,24 @@
           }
         };
       })(this));
-      return this.editor.on("keydown click focus", (function(_this) {
+      this.editor.on("keyup", (function(_this) {
+        return function(e) {
+          return _this.fireEvent("change", e);
+        };
+      })(this));
+      this.editor.on("keydown click focus", (function(_this) {
         return function() {
           return _this.highlightSelected();
+        };
+      })(this));
+      this.editor.on("contextmenu", (function(_this) {
+        return function(e) {
+          return _this.fireEvent("contextmenu", e);
+        };
+      })(this));
+      return this.editor.on("mousedown", (function(_this) {
+        return function(e) {
+          return _this.fireEvent("mousedown", e);
         };
       })(this));
     };
@@ -92,8 +107,9 @@
       this.resetElementSelection();
       this.selected = $(this.selectedElement());
       if (!this.selected.hasClass("tategaki-column")) {
-        return this.selected.addClass("selected");
+        this.selected.addClass("selected");
       }
+      return this.fireEvent("element:selected", this.selectedElement());
     };
 
     TategakiEditor.prototype.getHtmlSource = function() {
@@ -121,7 +137,8 @@
         return sel.addRange(range);
       } catch (_error) {
         e = _error;
-        return alert("行をまたぐマークアップはできません");
+        console.log(e);
+        throw "selection not markupable";
       }
     };
 
@@ -131,33 +148,35 @@
       });
     };
 
-    TategakiEditor.prototype.ruby = function(furigana) {
-      var e, furiganaElem, furiganaText, range, rubyElem, sel;
+    TategakiEditor.prototype.ruby = function(furigana, attrs) {
+      var furiganaElem, furiganaText, key, range, rubyElem, sel, val;
+      if (attrs == null) {
+        attrs = {};
+      }
       sel = this.doc.getSelection();
       range = sel.getRangeAt(0);
       if (range.collapsed) {
         return;
       }
       rubyElem = this.doc.createElement("ruby");
-      try {
-        range.surroundContents(rubyElem);
-        furiganaText = this.doc.createTextNode(furigana);
-        furiganaElem = this.doc.createElement("rt");
-        furiganaElem.appendChild(furiganaText);
-        rubyElem.appendChild(furiganaElem);
-        sel.removeAllRanges();
-        return sel.addRange(range);
-      } catch (_error) {
-        e = _error;
-        return alert("行をまたぐルビは付けられません");
+      console.log(range);
+      range.surroundContents(rubyElem);
+      furiganaText = this.doc.createTextNode(furigana);
+      furiganaElem = this.doc.createElement("rt");
+      furiganaElem.appendChild(furiganaText);
+      rubyElem.appendChild(furiganaElem);
+      for (key in attrs) {
+        val = attrs[key];
+        rubyElem.setAttribute(key, val);
       }
+      sel.removeAllRanges();
+      return sel.addRange(range);
     };
 
     TategakiEditor.prototype.removeMarkup = function() {
       if (this.selected.hasClass("tategaki-column")) {
         return null;
       }
-      console.log(this.selected);
       this.selected.contents().unwrap();
       return this.selected = null;
     };
@@ -362,20 +381,25 @@
     };
 
     TategakiEditor.prototype.selectedElement = function() {
-      var node;
+      var elem, node;
       if (!this.editor.is(":focus")) {
         return null;
       }
       node = this.doc.getSelection().focusNode;
-      if (node.nodeType === 1) {
-        return node;
-      } else {
-        return node.parentElement;
-      }
+      elem = node.nodeType === 1 ? node : node.parentElement;
+      return elem;
     };
 
     TategakiEditor.prototype.resetElementSelection = function() {
       return this.editor.find(".selected").removeClass("selected");
+    };
+
+    TategakiEditor.prototype.source = function(s) {
+      return this.editor.html(s);
+    };
+
+    TategakiEditor.prototype.getIframeOffset = function() {
+      return $("#" + this.iframeId).offset();
     };
 
     return TategakiEditor;
