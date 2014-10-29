@@ -13,11 +13,11 @@ class Shodo.App
     $(canvas).on "mousemove touchmove", (e)=>      
       @mousemove(e)
       e.preventDefault()
-    $(canvas).on "mouseup touchend", (e)=>
+    $(canvas).on "mouseup mouseout touchend", (e)=>
       @mouseup(e)
       e.preventDefault()
 
-    $("#clear").click ->
+    $("#clear").click =>
       ctx = @canvas.getContext('2d')
       ctx.clearRect(0,0, @canvas.width, @canvas.height)
 
@@ -30,8 +30,8 @@ class Shodo.App
       x= e.originalEvent.changedTouches[0].pageX
       y= originalEvent.changedTouches[0].pageY
     else
-      x= e.pageX
-      y= e.pageY      
+      x= e.offsetX
+      y= e.offsetY      
     @currentPos = x: x, y: y, t: new Date().getTime()
     if @isMouseDown
       @manager.draw(@currentPos)
@@ -79,7 +79,7 @@ class Shodo.StrokeManager
     brushDelta = brushSize - @previousBrushSize
     while t < 1
       brushSizeCur = brushSize - (t*brushDelta)
-      console.log brushSizeCur
+      console.log startPos
       pos = @getInterlatePos(startPos, endPos, t)
       if Math.random() > 0.2
         jitter = ((Math.random() > 0.5) ? 1 : -1) * parseInt(Math.random() * 1.2, 10)
@@ -88,96 +88,18 @@ class Shodo.StrokeManager
         ctx = @canvas.getContext('2d')
         ctx.drawImage(@brushImage, px, py, brushSizeCur, brushSizeCur)
       t += 1 / distance
-        
-    
   
   getInterlatePos: (p0, p1, moveLen) ->
     x = p0.x + (p1.x - p0.x)*moveLen;
     y = p0.y + (p1.y - p0.y)*moveLen;
-    { x:x, y:y };
+    { x:x, y:y }
 
-
-
-#   initialize: (canvas) ->
-#     @canvas = canvas
-#     @_points = []
-
-#   onMouseDown: (pointer) ->
-#     @_captureDrawingPath(pointer)
-#     @_render()
-
-#   onMouseMove: (pointer) ->
-#     @_captureDrawingPath(pointer)
-#     @canvas.clearContext(this.canvas.contextTop)
-#     @_render()
-
-#   onMouseUp: ->
-#     @_finalizeAndAddPath()
-
-#   _prepareForDrawing: (pointer) ->
-#     p = new fabric.Point(pointer.x, pointer.y)
-#     @_reset()
-#     @_addPoint(p)
-#     @canvas.contextTop.moveTo(p.x, p.y)
-
-#   _addPoint: (point) ->
-#     @_points.push point
-
-#   _reset: ->
-#     @_points.length = 0
-#     @_setBrushStyles()
-#     @_setShadow()
-
-#   _captureDrawingPath: (pointer) ->
-#     pointerPoint = new fabric.Point(pointer.x, pointer.y)
-#     @_addPoint(pointerPoint)
-
-#   _render: ()->
-#     ctx  = @canvas.contextTop
-#     v = @canvas.viewportTransform
-#     p1 = @_points[0]
-#     p2 = @_points[1]
-#     ctx.save()
-#     ctx.transform(v[0], v[1], v[2], v[3], v[4], v[5])
-#     for p in @_points
-#       ctx.drawImage(Shodo.BrushImages.Original, p.x, p.y)
-
-#   _finalizeAndAddPath: ->
-#     ctx = @canvas.contextTop
-#     ctx.closePath()
-#     @canvas.clearContext(this.canvas.contextTop)
-#     @canvas.renderAll()
-    
 
 Shodo.Util =
   createImage: (url) ->
     image = document.createElement('img')
     image.src = url
     image
-
-#   # createBrushImage: (originalImage, brushColor, width, height) ->
-#   #   tmpCanvas = document.createElement('canvas')
-#   #   tmpCanvas.width = width
-#   #   tmpCanvas.height = height
-#   #   ctx = tmpCanvas.getContext('2d')
-#   #   ctx.drawImage(originalBrushImage, 0, 0)
-#   #   imageData = ctx.getImageData(0, 0, tmpCanvas.width, tmpCanvas.height)
-#   #   for (i = 0, n = imageData.data.length / 4; i < n; i++)
-#   #     imageData.data[(i * 4)] = (brushColor & 0xff0000) >> 16
-#   #     imageData.data[(i * 4) + 1] = (brushColor & 0x00ff00) >> 8
-#   #     imageData.data[(i * 4) + 2] = (brushColor & 0x0000ff)
-#   #   ctx.putImageData(imageData, 0, 0)      
-
-#   #   tmpCanvas2 = document.createElement('canvas')
-#   #   tmpCanvas2.width = width
-#   #   tmpCanvas2.height = height
-#   #   ctx2 = tmpCanvas2.getContext('2d')
-#   #   for (i = 0; i < 15; i++)    
-#   #     ctx2.drawImage(tmpCanvas, 0, 0)
-      
-#   #   img = document.createElement('img')
-#   #   img.src = tmpCanvas2.toDataURL()
-#   #   img
 
 Shodo.Brush =
   medium:

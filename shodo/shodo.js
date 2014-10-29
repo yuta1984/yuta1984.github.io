@@ -24,17 +24,19 @@
           return e.preventDefault();
         };
       })(this));
-      $(canvas).on("mouseup touchend", (function(_this) {
+      $(canvas).on("mouseup mouseout touchend", (function(_this) {
         return function(e) {
           _this.mouseup(e);
           return e.preventDefault();
         };
       })(this));
-      $("#clear").click(function() {
-        var ctx;
-        ctx = this.canvas.getContext('2d');
-        return ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      });
+      $("#clear").click((function(_this) {
+        return function() {
+          var ctx;
+          ctx = _this.canvas.getContext('2d');
+          return ctx.clearRect(0, 0, _this.canvas.width, _this.canvas.height);
+        };
+      })(this));
     }
 
     App.prototype.mousedown = function(e) {
@@ -48,8 +50,8 @@
         x = e.originalEvent.changedTouches[0].pageX;
         y = originalEvent.changedTouches[0].pageY;
       } else {
-        x = e.pageX;
-        y = e.pageY;
+        x = e.offsetX;
+        y = e.offsetY;
       }
       this.currentPos = {
         x: x,
@@ -119,7 +121,7 @@
       _results = [];
       while (t < 1) {
         brushSizeCur = brushSize - (t * brushDelta);
-        console.log(brushSizeCur);
+        console.log(startPos);
         pos = this.getInterlatePos(startPos, endPos, t);
         if (Math.random() > 0.2) {
           jitter = ((_ref = Math.random() > 0.5) != null ? _ref : {
