@@ -21,6 +21,7 @@
       $(canvas).on("mousemove touchmove", (function(_this) {
         return function(e) {
           _this.mousemove(e);
+          $("#message").html(e);
           return e.preventDefault();
         };
       })(this));
@@ -58,7 +59,6 @@
         y: y,
         t: new Date().getTime()
       };
-      $("#message").html("x: " + this.currentPos.x + " y:" + this.currentPos.y);
       if (this.isMouseDown) {
         return this.manager.draw(this.currentPos);
       }
