@@ -59,8 +59,7 @@
         t: new Date().getTime()
       };
       if (this.isMouseDown) {
-        this.manager.draw(this.currentPos);
-        return $("#message").html(x);
+        return this.manager.draw(this.currentPos);
       }
     };
 
@@ -103,6 +102,7 @@
       }
       t = pos.t - this.previousPos.t;
       distance = this.getDistance(pos, this.previousPos);
+      $("#message").html(distance);
       velocity = distance / t;
       accelerate = (_ref = this.previousVelocity === 0) != null ? _ref : {
         0: velocity / this.previousVelocity
