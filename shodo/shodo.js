@@ -20,8 +20,8 @@
       })(this));
       $(canvas).on("mousemove touchmove", (function(_this) {
         return function(e) {
+          $("#message").html(e.originalEvent.changedTouches[0].pageX);
           _this.mousemove(e);
-          $("#message").html(e);
           return e.preventDefault();
         };
       })(this));

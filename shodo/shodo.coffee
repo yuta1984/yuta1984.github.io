@@ -10,9 +10,9 @@ class Shodo.App
     $(canvas).on "mousedown touchstart", (e)=>
       @mousedown(e)
       e.preventDefault()
-    $(canvas).on "mousemove touchmove", (e)=>      
-      @mousemove(e)
-      $("#message").html(e)
+    $(canvas).on "mousemove touchmove", (e)=>
+      $("#message").html(e.originalEvent.changedTouches[0].pageX)
+      @mousemove(e)      
       e.preventDefault()
     $(canvas).on "mouseup mouseout touchend", (e)=>
       @mouseup(e)
