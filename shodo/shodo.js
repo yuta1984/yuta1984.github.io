@@ -52,7 +52,6 @@
       } else {
         x = e.offsetX;
         y = e.offsetY;
-        $("#message").html(x);
       }
       this.currentPos = {
         x: x,
@@ -60,7 +59,8 @@
         t: new Date().getTime()
       };
       if (this.isMouseDown) {
-        return this.manager.draw(this.currentPos);
+        this.manager.draw(this.currentPos);
+        return $("#message").html(x);
       }
     };
 
