@@ -30,6 +30,11 @@
           return e.preventDefault();
         };
       })(this));
+      $("#clear").click(function() {
+        var ctx;
+        ctx = this.canvas.getContext('2d');
+        return ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      });
     }
 
     App.prototype.mousedown = function(e) {
@@ -38,11 +43,18 @@
     };
 
     App.prototype.mousemove = function(e) {
-      e = e.originalEvent.changedTouches[0] || e;
+      var x, y;
+      if (e.originalEvent && e.originalEvent.changedTouches) {
+        x = e.originalEvent.changedTouches[0].pageX;
+        y = originalEvent.changedTouches[0].pageY;
+      } else {
+        x = e.pageX;
+        y = e.pageY;
+      }
       $("#msg").html("move, " + e.pageX);
       this.currentPos = {
-        x: e.pageX,
-        y: e.pageY,
+        x: e.x,
+        y: y,
         t: new Date().getTime()
       };
       if (this.isMouseDown) {

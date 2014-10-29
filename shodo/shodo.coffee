@@ -15,16 +15,25 @@ class Shodo.App
       e.preventDefault()
     $(canvas).on "mouseup touchend", (e)=>
       @mouseup(e)
-      e.preventDefault()      
+      e.preventDefault()
+
+    $("#clear").click ->
+      ctx = @canvas.getContext('2d')
+      ctx.clearRect(0,0, @canvas.width, @canvas.height)
 
   mousedown: (e) ->
     @isMouseDown = true
     @manager.reset()    
     
-  mousemove: (e)->
-    e = e.originalEvent.changedTouches[0] or e
+  mousemove: (e)->    
+    if e.originalEvent and e.originalEvent.changedTouches
+      x= e.originalEvent.changedTouches[0].pageX
+      y= originalEvent.changedTouches[0].pageY
+    else
+      x= e.pageX
+      y= e.pageY      
     $("#msg").html "move, #{e.pageX}"    
-    @currentPos = x: e.pageX, y: e.pageY, t: new Date().getTime()
+    @currentPos = x: e.x, y: y, t: new Date().getTime()
     if @isMouseDown
       @manager.draw(@currentPos)
   
