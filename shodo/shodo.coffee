@@ -26,12 +26,14 @@ class Shodo.App
     @manager.reset()    
     
   mousemove: (e)->
-    if e.originalEvent and e.originalEvent.changedTouches
-      x= e.originalEvent.changedTouches[0].pageX
-      y= originalEvent.changedTouches[0].pageY
+    if e.originalEvent.touches
+      touch = e.originalEvent.touches[0]
+      x= touch.pageX
+      y= touch.pageY
     else
       x= e.offsetX
-      y= e.offsetY      
+      y= e.offsetY
+    $("#message").html(x)
     @currentPos = x: x, y: y, t: new Date().getTime()
     if @isMouseDown
       @manager.draw(@currentPos)
@@ -79,7 +81,6 @@ class Shodo.StrokeManager
     brushDelta = brushSize - @previousBrushSize
     while t < 1
       brushSizeCur = brushSize - (t*brushDelta)
-      console.log startPos
       pos = @getInterlatePos(startPos, endPos, t)
       if Math.random() > 0.2
         jitter = ((Math.random() > 0.5) ? 1 : -1) * parseInt(Math.random() * 1.2, 10)

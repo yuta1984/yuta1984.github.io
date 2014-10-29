@@ -45,14 +45,16 @@
     };
 
     App.prototype.mousemove = function(e) {
-      var x, y;
-      if (e.originalEvent && e.originalEvent.changedTouches) {
-        x = e.originalEvent.changedTouches[0].pageX;
-        y = originalEvent.changedTouches[0].pageY;
+      var touch, x, y;
+      if (e.originalEvent.touches) {
+        touch = e.originalEvent.touches[0];
+        x = touch.pageX;
+        y = touch.pageY;
       } else {
         x = e.offsetX;
         y = e.offsetY;
       }
+      $("#message").html(x);
       this.currentPos = {
         x: x,
         y: y,
@@ -121,7 +123,6 @@
       _results = [];
       while (t < 1) {
         brushSizeCur = brushSize - (t * brushDelta);
-        console.log(startPos);
         pos = this.getInterlatePos(startPos, endPos, t);
         if (Math.random() > 0.2) {
           jitter = ((_ref = Math.random() > 0.5) != null ? _ref : {
