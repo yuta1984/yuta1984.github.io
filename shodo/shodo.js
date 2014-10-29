@@ -45,7 +45,7 @@
       ctx = this.canvas.getContext('2d');
       ctx.save();
       ctx.globalAlpha = 0.3;
-      ctx.drawImage(Shodo.Image.Sample, 0, 0, 632, 520);
+      ctx.drawImage(Shodo.Image.Sample, 0, 0, 63, 52);
       ctx.globalAlpha = 1.0;
       return ctx.restore();
     };
