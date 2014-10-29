@@ -11,7 +11,6 @@ class Shodo.App
       @mousedown(e)
       e.preventDefault()
     $(canvas).on "mousemove touchmove", (e)=>
-      $("#message").html(e.originalEvent.changedTouches[0].pageX)
       @mousemove(e)      
       e.preventDefault()
     $(canvas).on "mouseup mouseout touchend", (e)=>
@@ -32,7 +31,8 @@ class Shodo.App
       y= originalEvent.changedTouches[0].pageY
     else
       x= e.offsetX
-      y= e.offsetY      
+      y= e.offsetY
+      $("#message").html(x)            
     @currentPos = x: x, y: y, t: new Date().getTime()    
     if @isMouseDown
       @manager.draw(@currentPos)

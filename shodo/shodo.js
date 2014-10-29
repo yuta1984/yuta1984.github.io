@@ -20,7 +20,6 @@
       })(this));
       $(canvas).on("mousemove touchmove", (function(_this) {
         return function(e) {
-          $("#message").html(e.originalEvent.changedTouches[0].pageX);
           _this.mousemove(e);
           return e.preventDefault();
         };
@@ -53,6 +52,7 @@
       } else {
         x = e.offsetX;
         y = e.offsetY;
+        $("#message").html(x);
       }
       this.currentPos = {
         x: x,
