@@ -5,6 +5,7 @@ window.Shodo = Shodo
 class Shodo.App
   constructor: (canvas) ->
     @canvas = canvas
+    @drawBackground()
     @manager = new Shodo.StrokeManager(canvas)
     
     $(canvas).on "mousedown touchstart", (e)=>
@@ -20,6 +21,16 @@ class Shodo.App
     $("#clear").click =>
       ctx = @canvas.getContext('2d')
       ctx.clearRect(0,0, @canvas.width, @canvas.height)
+
+  drawBackground: ->
+    img = new Image()
+    img.onload = =>
+      ctx = @canvas.getContext('2d')
+      ctx.save()
+      ctx.globalAlpha = 0.3
+      ctx.drawImage(img, 0, 0)
+      ctx.restore()      
+    img.src = "./sample.png"
 
   mousedown: (e) ->
     @isMouseDown = true

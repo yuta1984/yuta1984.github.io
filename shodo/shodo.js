@@ -11,6 +11,7 @@
   Shodo.App = (function() {
     function App(canvas) {
       this.canvas = canvas;
+      this.drawBackground();
       this.manager = new Shodo.StrokeManager(canvas);
       $(canvas).on("mousedown touchstart", (function(_this) {
         return function(e) {
@@ -38,6 +39,22 @@
         };
       })(this));
     }
+
+    App.prototype.drawBackground = function() {
+      var img;
+      img = new Image();
+      img.onload = (function(_this) {
+        return function() {
+          var ctx;
+          ctx = _this.canvas.getContext('2d');
+          ctx.save();
+          ctx.globalAlpha = 0.3;
+          ctx.drawImage(img, 0, 0);
+          return ctx.restore();
+        };
+      })(this);
+      return img.src = "./sample.png";
+    };
 
     App.prototype.mousedown = function(e) {
       this.isMouseDown = true;
