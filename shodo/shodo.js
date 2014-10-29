@@ -58,8 +58,8 @@
         y: y,
         t: new Date().getTime()
       };
+      $("#message").html(x);
       if (this.isMouseDown) {
-        $("#message").html(x);
         return this.manager.draw(this.currentPos);
       }
     };
