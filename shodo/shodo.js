@@ -53,7 +53,7 @@
           return ctx.restore();
         };
       })(this);
-      return img.src = "./sample.png";
+      return img.src = "sample.png";
     };
 
     App.prototype.mousedown = function(e) {

@@ -30,7 +30,7 @@ class Shodo.App
       ctx.globalAlpha = 0.3
       ctx.drawImage(img, 0, 0)
       ctx.restore()      
-    img.src = "./sample.png"
+    img.src = "sample.png"
 
   mousedown: (e) ->
     @isMouseDown = true
