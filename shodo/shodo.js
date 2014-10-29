@@ -51,9 +51,8 @@
         x = e.pageX;
         y = e.pageY;
       }
-      $("#msg").html("move, " + e.pageX);
       this.currentPos = {
-        x: e.x,
+        x: x,
         y: y,
         t: new Date().getTime()
       };

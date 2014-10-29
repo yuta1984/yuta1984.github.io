@@ -32,8 +32,7 @@ class Shodo.App
     else
       x= e.pageX
       y= e.pageY      
-    $("#msg").html "move, #{e.pageX}"    
-    @currentPos = x: e.x, y: y, t: new Date().getTime()
+    @currentPos = x: x, y: y, t: new Date().getTime()
     if @isMouseDown
       @manager.draw(@currentPos)
   
