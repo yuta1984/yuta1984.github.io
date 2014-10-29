@@ -33,6 +33,7 @@ class Shodo.App
       x= e.offsetX
       y= e.offsetY      
     @currentPos = x: x, y: y, t: new Date().getTime()
+    $("#message").html("x: #{@currentPos.x} y:#{@currentPos.y}")
     if @isMouseDown
       @manager.draw(@currentPos)
   

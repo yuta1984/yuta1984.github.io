@@ -58,6 +58,7 @@
         y: y,
         t: new Date().getTime()
       };
+      $("#message").html("x: " + this.currentPos.x + " y:" + this.currentPos.y);
       if (this.isMouseDown) {
         return this.manager.draw(this.currentPos);
       }
