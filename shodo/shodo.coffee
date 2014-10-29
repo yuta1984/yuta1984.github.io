@@ -34,6 +34,7 @@ class Shodo.App
       y= e.offsetY      
     @currentPos = x: x, y: y, t: new Date().getTime()
     if @isMouseDown
+      $("#message").html(x)                            
       @manager.draw(@currentPos)
   
   mouseup: (e) ->
@@ -65,7 +66,6 @@ class Shodo.StrokeManager
       @previousPos = pos
     t = (pos.t - @previousPos.t)
     distance = @getDistance(pos, @previousPos)
-    $("#message").html(distance)                      
     velocity = distance / t
     accelerate = (@previousVelocity == 0) ? 0 : velocity / @previousVelocity
     brushSize = Math.min(@minimumBrushSize)
