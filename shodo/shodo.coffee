@@ -21,6 +21,7 @@ class Shodo.App
     $("#clear").click =>
       ctx = @canvas.getContext('2d')
       ctx.clearRect(0,0, @canvas.width, @canvas.height)
+      @drawBackground()
 
   drawBackground: ->
     ctx = @canvas.getContext('2d')

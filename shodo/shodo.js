@@ -35,7 +35,8 @@
         return function() {
           var ctx;
           ctx = _this.canvas.getContext('2d');
-          return ctx.clearRect(0, 0, _this.canvas.width, _this.canvas.height);
+          ctx.clearRect(0, 0, _this.canvas.width, _this.canvas.height);
+          return _this.drawBackground();
         };
       })(this));
     }
