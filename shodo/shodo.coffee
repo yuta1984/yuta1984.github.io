@@ -29,11 +29,11 @@ class Shodo.App
     if e.originalEvent and e.originalEvent.changedTouches
       x= e.originalEvent.changedTouches[0].pageX
       y= originalEvent.changedTouches[0].pageY
+      $("#message").html(x)      
     else
       x= e.offsetX
       y= e.offsetY      
     @currentPos = x: x, y: y, t: new Date().getTime()
-    $("#message").html(x)                            
     if @isMouseDown
       @manager.draw(@currentPos)
   

@@ -49,6 +49,7 @@
       if (e.originalEvent && e.originalEvent.changedTouches) {
         x = e.originalEvent.changedTouches[0].pageX;
         y = originalEvent.changedTouches[0].pageY;
+        $("#message").html(x);
       } else {
         x = e.offsetX;
         y = e.offsetY;
@@ -58,7 +59,6 @@
         y: y,
         t: new Date().getTime()
       };
-      $("#message").html(x);
       if (this.isMouseDown) {
         return this.manager.draw(this.currentPos);
       }
