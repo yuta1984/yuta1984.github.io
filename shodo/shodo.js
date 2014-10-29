@@ -40,15 +40,7 @@
       })(this));
     }
 
-    App.prototype.drawBackground = function() {
-      var ctx;
-      ctx = this.canvas.getContext('2d');
-      ctx.save();
-      ctx.globalAlpha = 0.3;
-      ctx.drawImage(Shodo.Image.Sample, 0, 0);
-      ctx.globalAlpha = 1.0;
-      return ctx.restore();
-    };
+    App.prototype.drawBackground = function() {};
 
     App.prototype.mousedown = function(e) {
       this.isMouseDown = true;
