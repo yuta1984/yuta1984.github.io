@@ -25,11 +25,10 @@ class Shodo.App
     @isMouseDown = true
     @manager.reset()    
     
-  mousemove: (e)->    
+  mousemove: (e)->
     if e.originalEvent and e.originalEvent.changedTouches
       x= e.originalEvent.changedTouches[0].pageX
       y= originalEvent.changedTouches[0].pageY
-      $("#message").html(x)      
     else
       x= e.offsetX
       y= e.offsetY      
