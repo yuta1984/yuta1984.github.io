@@ -27,7 +27,7 @@ class Shodo.App
     ctx = @canvas.getContext('2d')
     ctx.save()
     ctx.globalAlpha = 0.3
-    ctx.drawImage(Shodo.Image.Sample, 0, 0, 63, 52)
+    ctx.drawImage(Shodo.Image.Sample, 0, 0)
     ctx.globalAlpha = 1.0    
     ctx.restore()
 
