@@ -14,7 +14,9 @@
       var image2Btn = document.getElementById("image2");
       var image3Btn = document.getElementById("image3");
       var htInput = document.getElementById("high-threshold");
-      var ltInput = document.getElementById("low-threshold");    
+      var ltInput = document.getElementById("low-threshold");
+      var sigmmaInput = document.getElementById("sigmma");
+      var kernelSizeInput = document.getElementById("kernelSize");    
       var executeBtn = document.getElementById("execute");
       
       var loadImage = function(url){
@@ -36,10 +38,12 @@
       image3Btn.addEventListener("click", onButtonClick);    
       
       var execute = function(){
-        start = new Date;
-        ht = parseInt(htInput.value);
-        lt = parseInt(ltInput.value);
-        window.canny = CannyJS.canny(canvas1, ht, lt)
+        var start = new Date;
+        var ht = parseInt(htInput.value);
+        var lt = parseInt(ltInput.value);
+        var sigmma = parseFloat(sigmmaInput.value);
+        var kernelSize = parseInt(kernelSizeInput.value);
+        window.canny = CannyJS.canny(canvas1, ht, lt, sigmma, kernelSize);
         canny.drawOn(canvas2);
         finish = new Date;
         duration = (finish-start)/1000;
@@ -54,15 +58,21 @@
 <body>
   <h1>Canny JS: A JavaScript Implementation of Canny Edge Detection</h1>
   <div>
+    <label>Switch image:</label>
     <button id="image1" value="ukiyo-e.png">Image 1</button>
     <button id="image2" value="car.jpg">Image 2</button>
     <button id="image3" value="valve.png">Image 3</button>
   </div>
   <div>
-    <label>high threshold (0-255)</label>
-    <input type="text" id="high-threshold" value="100"></input><br/>
-    <label>low threshold (0-255)</label>
-    <input type="text" id="low-threshold" value="50"></input>
+    <label>high threshold (0-255):</label>
+    <input type="text" id="high-threshold" value="150"></input><br/>
+    <label>low threshold (0-255):</label>
+    <input type="text" id="low-threshold" value="100"></input><br/>
+    <label>sigmma (0.0-):</label>
+    <input type="text" id="sigmma" value="1.4"></input><br/>
+    <label>kernel size (odd number):</label>
+    <input type="text" id="kernelSize" value="3"></input><br/>
+    
   <div/>
   <div>
     <button id="execute">Detect edges</button>

@@ -91,7 +91,7 @@ class GrayImageData
     @
 
   ###*
-  # return the linear array of the image data
+  # return linear array of the image data
   # @return {array} array of the pixel color data
   ###
   toImageDataArray: ->
@@ -145,10 +145,10 @@ CannyJS = {}
 # apply gaussian blur to the image data
 # @param {object} GrayImageData object
 # @param {number} [sigmma=1.4] value of sigmma of gauss function
-# @param {number} [size=5] size of the kernel (must be an odd number)
+# @param {number} [size=3] size of the kernel (must be an odd number)
 # @return {object} GrayImageData object
 ###
-CannyJS.gaussianBlur= (imgData, sigmma=1.4, size=5) ->
+CannyJS.gaussianBlur= (imgData, sigmma=1.4, size=3) ->
   kernel = CannyJS.generateKernel(sigmma, size)
   copy = imgData.copy()
   copy.fill 0
@@ -158,9 +158,9 @@ CannyJS.gaussianBlur= (imgData, sigmma=1.4, size=5) ->
     #   for j in [0..size-1]
     #     copy.data[x][y] += neighbors[i][j] * kernel[i][j]
     i = 0
-    while i < size-1
+    while i <= size-1
       j = 0
-      while j < size-1
+      while j <= size-1
         copy.data[x][y] += neighbors[i][j] * kernel[i][j]
         j++
       i++
@@ -178,16 +178,17 @@ CannyJS.generateKernel= (sigmma, size) ->
   kernel = Util.generateMatrix(size, size, 0)
   sum = 0
   for i in [0..size-1]
-    x = -(size-1)/2 + i # calculate the absolute x coordinate of neighbors
+    x = -(size-1)/2 + i # calculate the local x coordinate of neighbor
     for j in [0..size-1]
-      y = -(size-1)/2 + j # calculate the absolute y coordinate of neighbors
+      y = -(size-1)/2 + j # calculate the local y coordinate of neighbor
       gaussian = (1/(2*Math.PI*s*s)) * Math.pow(e, -(x*x+y*y)/(2*s*s))
-      kernel[i][j] = gaussian.toFixed(3)
+      kernel[i][j] = gaussian
       sum += gaussian
   # normalization
   for i in [0..size-1]
     for j in [0..size-1]
-      kernel[i][j] = kernel[i][j]/sum
+      kernel[i][j] = (kernel[i][j]/sum).toFixed(3)
+  console.log "kernel",kernel      
   kernel
 
 ###*
@@ -287,15 +288,15 @@ CannyJS.hysteresis= (imgData, ht, lt) ->
 # @param {number} [ht=100] value of high threshold
 # @param {number} [lt=50] value of low threshold
 # @param {number} [sigmma=1.4] value of sigmma of gauss function
-# @param {number} [size=5] size of the kernel (must be an odd number)
+# @param {number} [size=3] size of the kernel (must be an odd number)
 # @return {object} GrayImageData object
 ###
-CannyJS.canny = (canvas, ht=100, lt=50, sigmma=1.4, kernelSize=5) ->
+CannyJS.canny = (canvas, ht=100, lt=50, sigmma=1.4, kernelSize=3) ->
   imgData = new GrayImageData(canvas.width, canvas.height)
   imgData.loadCanvas(canvas)
-  blur = CannyJS.gaussianBlur(imgData, sigmma, kernelSize)
-  sobel = CannyJS.sobel(blur)
-  nms = CannyJS.nonMaximumSuppression(sobel)
+  window.blur = CannyJS.gaussianBlur(imgData, sigmma, kernelSize)
+  window.sobel = CannyJS.sobel(blur)
+  window.nms = CannyJS.nonMaximumSuppression(sobel)
   CannyJS.hysteresis(nms, ht, lt)
 
 window.CannyJS = CannyJS

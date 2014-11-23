@@ -116,7 +116,7 @@
 
 
     /**
-     * return the linear array of the image data
+     * return linear array of the image data
      * @return {array} array of the pixel color data
      */
 
@@ -209,7 +209,7 @@
    * apply gaussian blur to the image data
    * @param {object} GrayImageData object
    * @param {number} [sigmma=1.4] value of sigmma of gauss function
-   * @param {number} [size=5] size of the kernel (must be an odd number)
+   * @param {number} [size=3] size of the kernel (must be an odd number)
    * @return {object} GrayImageData object
    */
 
@@ -219,7 +219,7 @@
       sigmma = 1.4;
     }
     if (size == null) {
-      size = 5;
+      size = 3;
     }
     kernel = CannyJS.generateKernel(sigmma, size);
     copy = imgData.copy();
@@ -228,9 +228,9 @@
       var i, j, _results;
       i = 0;
       _results = [];
-      while (i < size - 1) {
+      while (i <= size - 1) {
         j = 0;
-        while (j < size - 1) {
+        while (j <= size - 1) {
           copy.data[x][y] += neighbors[i][j] * kernel[i][j];
           j++;
         }
@@ -260,15 +260,16 @@
       for (j = _j = 0, _ref1 = size - 1; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; j = 0 <= _ref1 ? ++_j : --_j) {
         y = -(size - 1) / 2 + j;
         gaussian = (1 / (2 * Math.PI * s * s)) * Math.pow(e, -(x * x + y * y) / (2 * s * s));
-        kernel[i][j] = gaussian.toFixed(3);
+        kernel[i][j] = gaussian;
         sum += gaussian;
       }
     }
     for (i = _k = 0, _ref2 = size - 1; 0 <= _ref2 ? _k <= _ref2 : _k >= _ref2; i = 0 <= _ref2 ? ++_k : --_k) {
       for (j = _l = 0, _ref3 = size - 1; 0 <= _ref3 ? _l <= _ref3 : _l >= _ref3; j = 0 <= _ref3 ? ++_l : --_l) {
-        kernel[i][j] = kernel[i][j] / sum;
+        kernel[i][j] = (kernel[i][j] / sum).toFixed(3);
       }
     }
+    console.log("kernel", kernel);
     return kernel;
   };
 
@@ -408,12 +409,12 @@
    * @param {number} [ht=100] value of high threshold
    * @param {number} [lt=50] value of low threshold
    * @param {number} [sigmma=1.4] value of sigmma of gauss function
-   * @param {number} [size=5] size of the kernel (must be an odd number)
+   * @param {number} [size=3] size of the kernel (must be an odd number)
    * @return {object} GrayImageData object
    */
 
   CannyJS.canny = function(canvas, ht, lt, sigmma, kernelSize) {
-    var blur, imgData, nms, sobel;
+    var imgData;
     if (ht == null) {
       ht = 100;
     }
@@ -424,13 +425,13 @@
       sigmma = 1.4;
     }
     if (kernelSize == null) {
-      kernelSize = 5;
+      kernelSize = 3;
     }
     imgData = new GrayImageData(canvas.width, canvas.height);
     imgData.loadCanvas(canvas);
-    blur = CannyJS.gaussianBlur(imgData, sigmma, kernelSize);
-    sobel = CannyJS.sobel(blur);
-    nms = CannyJS.nonMaximumSuppression(sobel);
+    window.blur = CannyJS.gaussianBlur(imgData, sigmma, kernelSize);
+    window.sobel = CannyJS.sobel(blur);
+    window.nms = CannyJS.nonMaximumSuppression(sobel);
     return CannyJS.hysteresis(nms, ht, lt);
   };
 
