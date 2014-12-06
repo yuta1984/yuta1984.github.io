@@ -15,7 +15,7 @@
       var image3Btn = document.getElementById("image3");
       var htInput = document.getElementById("high-threshold");
       var ltInput = document.getElementById("low-threshold");
-      var sigmmaInput = document.getElementById("sigmma");
+      var sigmaInput = document.getElementById("sigma");
       var kernelSizeInput = document.getElementById("kernelSize");    
       var executeBtn = document.getElementById("execute");
       
@@ -41,9 +41,9 @@
         var start = new Date;
         var ht = parseInt(htInput.value);
         var lt = parseInt(ltInput.value);
-        var sigmma = parseFloat(sigmmaInput.value);
+        var sigma = parseFloat(sigmaInput.value);
         var kernelSize = parseInt(kernelSizeInput.value);
-        window.canny = CannyJS.canny(canvas1, ht, lt, sigmma, kernelSize);
+        window.canny = CannyJS.canny(canvas1, ht, lt, sigma, kernelSize);
         canny.drawOn(canvas2);
         finish = new Date;
         duration = (finish-start)/1000;
@@ -68,8 +68,8 @@
     <input type="text" id="high-threshold" value="100"></input><br/>
     <label>low threshold (0-255):</label>
     <input type="text" id="low-threshold" value="50"></input><br/>
-    <label>sigmma (0.0-):</label>
-    <input type="text" id="sigmma" value="1.4"></input><br/>
+    <label>sigma (0.0-):</label>
+    <input type="text" id="sigma" value="1.4"></input><br/>
     <label>kernel size (odd number):</label>
     <input type="text" id="kernelSize" value="3"></input><br/>
     
