@@ -1,0 +1,10 @@
+// @tag full-page
+// @require /Users/yuta/Dropbox/web/gsweb/app.js
+// @require /Users/yuta/Dropbox/web/gsweb/http:/code.jquery.com/jquery-2.1.1.min.js
+// @require /Users/yuta/Dropbox/web/gsweb/resources/js/tategaki.js
+// @require /Users/yuta/Dropbox/web/gsweb/http:/cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.8/fabric.min.js
+// @require /Users/yuta/Dropbox/web/gsweb/resources/js/fabric_custom_classes.js
+// @require /Users/yuta/Dropbox/web/gsweb/https:/vkbeautify.googlecode.com/files/vkbeautify.0.99.00.beta.js
+// @require /Users/yuta/Dropbox/web/gsweb/http:/cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/highlight.min.js
+// @require /Users/yuta/Dropbox/web/gsweb/resources/js/n3-browser.min.js
+// @require /Users/yuta/Dropbox/web/gsweb/https:/togetherjs.com/togetherjs-min.js
