@@ -48,7 +48,7 @@ Ext.define "GSW.Application",
     params = Ext.urlDecode(getParams[getParams.length - 1])    
     Ext.Ajax.request
       withCredentials: true
-      url: "http://localhost:3000/projects/#{params.projectId}.json"
+      url: "#{@getServerURL()}projects/#{params.projectId}.json"
       success: callback
     
   loadProject: (data)->

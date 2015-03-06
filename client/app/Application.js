@@ -37,7 +37,7 @@ details.
       params = Ext.urlDecode(getParams[getParams.length - 1]);
       return Ext.Ajax.request({
         withCredentials: true,
-        url: "http://localhost:3000/projects/" + params.projectId + ".json",
+        url: "" + (this.getServerURL()) + "projects/" + params.projectId + ".json",
         success: callback
       });
     },
