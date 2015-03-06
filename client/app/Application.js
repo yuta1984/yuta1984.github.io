@@ -37,7 +37,7 @@ details.
       params = Ext.urlDecode(getParams[getParams.length - 1]);
       return Ext.Ajax.request({
         withCredentials: true,
-        url: "" + (this.getServerURL()) + "projects/" + params.projectId + ".json",
+        url: "https://gsweb.herokuapp.com/projects/" + params.projectId + ".json",
         success: callback
       });
     },

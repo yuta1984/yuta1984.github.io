@@ -48,7 +48,7 @@ Ext.define "GSW.Application",
     params = Ext.urlDecode(getParams[getParams.length - 1])    
     Ext.Ajax.request
       withCredentials: true
-      url: "#{@getServerURL()}projects/#{params.projectId}.json"
+      url: "https://gsweb.herokuapp.com/projects/#{params.projectId}.json"
       success: callback
     
   loadProject: (data)->
