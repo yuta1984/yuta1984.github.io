@@ -33,8 +33,22 @@
       }
     ],
     update: function(attr, value) {
-      var params, url;
       this.set(attr, value);
+      this.updateOnServer(attr, value);
+      return this.notifyToGroup(attr, value);
+    },
+    notifyToGroup: function(attr, value) {
+      var data;
+      data = {
+        type: "update:image",
+        id: this.id,
+        attrs: {}
+      };
+      data["attrs"][attr] = value;
+      return TogetherJS.send(data);
+    },
+    updateOnServer: function(attr, value) {
+      var params, url;
       url = this.buildURL() + ".json";
       params = {};
       params["image[" + attr + "]"] = value;
@@ -52,7 +66,7 @@
     },
     statics: {
       fromJSON: function(data) {
-        var config;
+        var config, image;
         config = {
           id: data._id.$oid,
           title: data.title,
@@ -62,7 +76,9 @@
           translation: data.translation || '',
           notes: data.note || ''
         };
-        return new this(config);
+        image = new this(config);
+        Ext.getStore('GSW.store.ImageStore').add(image);
+        return image;
       }
     },
     buildURL: function() {

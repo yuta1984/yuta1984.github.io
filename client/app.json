@@ -149,6 +149,11 @@
 	    "remote": false
 	},
 	{
+	    "path": "resources/js/togetherjs_config.js",
+	    "bundle": true,
+	    "remote": false
+	},
+	{
 	    "path": "https://togetherjs.com/togetherjs-min.js",
 	    "bundle": true,
 	    "remote": true

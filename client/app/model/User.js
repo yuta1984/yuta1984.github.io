@@ -23,14 +23,16 @@
     },
     statics: {
       fromJSON: function(data) {
-        var config;
+        var config, user;
         config = {
           id: data._id.$oid,
           username: data.username,
           avatar_standard: data.avatar.standard.url,
           avatar_thumbnail: data.avatar.thumbnail.url
         };
-        return new this(config);
+        user = new this(config);
+        Ext.getStore('GSW.store.UserStore').add(user);
+        return user;
       }
     }
   });

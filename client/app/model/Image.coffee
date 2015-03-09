@@ -14,6 +14,15 @@ Ext.define 'GSW.model.Image',
   # FIX THIS!!!
   update: (attr, value) ->
     @set(attr,value)
+    @updateOnServer(attr, value)
+    @notifyToGroup(attr, value)
+
+  notifyToGroup: (attr, value)->
+    data = type: "update:image", id: @id, attrs: {}    
+    data["attrs"][attr] = value
+    TogetherJS.send data
+
+  updateOnServer: (attr, value)->
     url = @buildURL() + ".json"
     params = {}
     params["image[#{attr}]"] = value
@@ -37,7 +46,9 @@ Ext.define 'GSW.model.Image',
         transcription: data.transcription or ''
         translation: data.translation or ''
         notes: data.note or ''
-      new this(config)
+      image = new this(config)
+      Ext.getStore('GSW.store.ImageStore').add image
+      image
       
   buildURL: ->
     server = GSW.app.getServerURL()

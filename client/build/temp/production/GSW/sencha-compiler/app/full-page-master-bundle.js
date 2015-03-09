@@ -7,4 +7,5 @@
 // @require /Users/yuta/work/yuta1984.github.io/client/https:/vkbeautify.googlecode.com/files/vkbeautify.0.99.00.beta.js
 // @require /Users/yuta/work/yuta1984.github.io/client/http:/cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/highlight.min.js
 // @require /Users/yuta/work/yuta1984.github.io/client/resources/js/n3-browser.min.js
+// @require /Users/yuta/work/yuta1984.github.io/client/resources/js/togetherjs_config.js
 // @require /Users/yuta/work/yuta1984.github.io/client/https:/togetherjs.com/togetherjs-min.js

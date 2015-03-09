@@ -11,15 +11,16 @@ details.
     extend: "Ext.app.Application",
     name: "GSW",
     appProperty: 'app',
-    stores: ["GSW.store.ResourceStore", "GSW.store.UserStore"],
+    stores: ["GSW.store.ResourceStore", "GSW.store.UserStore", "GSW.store.ManuscriptStore", "GSW.store.ImageStore"],
     models: ["GSW.model.Project", "GSW.model.User", "GSW.model.Manuscript", "GSW.model.Image", "GSW.model.Surface", "GSW.model.Zone", "GSW.model.AbstractAnnotation", "GSW.model.ImageAnnotation", "GSW.model.TextAnnotation"],
     launch: function() {
       return this.fetchProject((function(_this) {
         return function(data) {
           data = JSON.parse(data.responseText);
           console.log(data);
-          _this.loadProject(data);
-          return Ext.getBody().unmask();
+          return _this.loadProject(data, function() {
+            return Ext.getBody().unmask();
+          });
         };
       })(this));
     },
@@ -40,7 +41,7 @@ details.
         success: callback
       });
     },
-    loadProject: function(data) {
+    loadProject: function(data, callback) {
       var store;
       this.project = GSW.model.Project.fromJSON(data);
       console.log({
@@ -48,7 +49,10 @@ details.
       });
       store = Ext.getStore("GSW.store.ResourceStore");
       Ext.getCmp("navigation-tree-panel").setTitle(this.project.get('name'));
-      return store.setRootNode(this.project.toTreeModel());
+      store.setRootNode(this.project.toTreeModel());
+      if (callback) {
+        return callback();
+      }
     },
     getProject: function() {
       return this.project;

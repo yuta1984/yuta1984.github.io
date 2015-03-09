@@ -18,7 +18,7 @@
     ],
     statics: {
       fromJSON: function(data) {
-        var config, images, img, m, store;
+        var config, images, img, m, parent;
         images = data.images ? (function() {
           var _i, _len, _ref, _results;
           _ref = data.images;
@@ -35,8 +35,9 @@
           description: data.description
         };
         m = new this(config);
-        store = m.images();
-        store.add(images);
+        parent = m.images();
+        parent.add(images);
+        Ext.getStore('GSW.store.ManuscriptStore').add(m);
         return m;
       }
     }

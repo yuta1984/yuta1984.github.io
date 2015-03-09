@@ -163,12 +163,16 @@
         setTimeout =>
           @saveText()
           @waitingUpdate=false
-        , 3000
+        , 2000
 
     saveText: ->
       source = @getSource()
       image = @up('transcription-panel').getImage()
       image.update('transcription', source)
+
+    reload: ->
+      image = @up('transcription-panel').getImage()
+      @source image.get('transcription')
 
     buildEditor: ->
       iframeId = undefined

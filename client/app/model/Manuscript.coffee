@@ -15,7 +15,10 @@ Ext.define 'GSW.model.Manuscript',
         title: data.title
         description: data.description
       m = new this(config)
-      store = m.images()
-      store.add(images)
+      # add to parent store
+      parent = m.images()
+      parent.add(images)
+      # add to global store
+      Ext.getStore('GSW.store.ManuscriptStore').add m
       m
       

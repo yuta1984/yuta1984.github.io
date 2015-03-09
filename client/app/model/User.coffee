@@ -18,5 +18,8 @@ Ext.define 'GSW.model.User',
         username: data.username
         avatar_standard: data.avatar.standard.url
         avatar_thumbnail: data.avatar.thumbnail.url
-      new this(config)
+      user = new this(config)
+      Ext.getStore('GSW.store.UserStore').add user
+      user
+
       

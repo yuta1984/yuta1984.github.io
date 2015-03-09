@@ -165,7 +165,7 @@
               _this.saveText();
               return _this.waitingUpdate = false;
             };
-          })(this), 3000);
+          })(this), 2000);
         }
       },
       saveText: function() {
@@ -173,6 +173,11 @@
         source = this.getSource();
         image = this.up('transcription-panel').getImage();
         return image.update('transcription', source);
+      },
+      reload: function() {
+        var image;
+        image = this.up('transcription-panel').getImage();
+        return this.source(image.get('transcription'));
       },
       buildEditor: function() {
         var iframeId;

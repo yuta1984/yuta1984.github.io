@@ -15,6 +15,11 @@
     },
     constructor: function(config) {
       this.image = config.image;
+      this.image.on("update:image", (function(_this) {
+        return function() {
+          return _this.down("tategaki-editor").reload();
+        };
+      })(this));
       return this.callParent(arguments);
     },
     setBackgroundImg: function(url) {

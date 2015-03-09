@@ -19,6 +19,8 @@ Ext.define 'GSW.view.transcription.TranscriptionPanel',
 
     constructor: (config) ->
       @image = config.image
+      @image.on "update:image", =>
+        @down("tategaki-editor").reload()
       @callParent(arguments)
     
     setBackgroundImg: (url)->

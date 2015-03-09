@@ -10,6 +10,8 @@ Ext.define "GSW.Application",
   stores: [
     "GSW.store.ResourceStore"
     "GSW.store.UserStore"
+    "GSW.store.ManuscriptStore"
+    "GSW.store.ImageStore"        
   ]
   models: [
     "GSW.model.Project"
@@ -26,8 +28,9 @@ Ext.define "GSW.Application",
     @fetchProject (data) =>
       data = JSON.parse(data.responseText)
       console.log data
-      @loadProject(data)
-      Ext.getBody().unmask()   
+      @loadProject data, =>
+        Ext.getBody().unmask()
+
       
     
   loadGoogleMap: ->
@@ -50,13 +53,14 @@ Ext.define "GSW.Application",
       url: "#{@getServerURL()}/projects/#{projectId}.json"
       success: callback
     
-  loadProject: (data)->
+  loadProject: (data, callback)->
     # init project
     @project = GSW.model.Project.fromJSON(data)
     console.log root: @project.toTreeModel()
     store=Ext.getStore("GSW.store.ResourceStore")
     Ext.getCmp("navigation-tree-panel").setTitle(@project.get('name'))
     store.setRootNode @project.toTreeModel()
+    callback() if callback
 
   getProject: ->
     @project
