@@ -31,13 +31,12 @@ details.
       return document.body.appendChild(script);
     },
     fetchProject: function(callback) {
-      var getParams, params;
+      var projectId;
       Ext.getBody().mask("Loading...");
-      getParams = document.URL.split("?");
-      params = Ext.urlDecode(getParams[getParams.length - 1]);
+      projectId = this.getParameterByName("projectId");
       return Ext.Ajax.request({
         withCredentials: true,
-        url: "https://gsweb.herokuapp.com/projects/" + params.projectId + ".json",
+        url: "" + (this.getServerURL()) + "/projects/" + projectId + ".json",
         success: callback
       });
     },
@@ -56,9 +55,20 @@ details.
     },
     getServerURL: function() {
       if (document.URL = ~/localhost/) {
-        return "http://localhost/gsweb/";
+        return "http://localhost:3000";
       } else {
-        return "https://gsweb.herokuapp.com/";
+        return "https://gsweb.herokuapp.com";
+      }
+    },
+    getParameterByName: function(name) {
+      var regex, results;
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+      regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      results = regex.exec(location.search);
+      if (results === null) {
+        return '';
+      } else {
+        return decodeURIComponent(results[1].replace(/\+/g, ' '));
       }
     }
   });

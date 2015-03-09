@@ -11,28 +11,21 @@
         name: 'description',
         type: 'string',
         defaultValue: ''
-      }
-    ],
-    hasMany: [
-      {
+      }, {
+        name: 'owner'
+      }, {
         name: 'admins',
-        model: 'GSW.model.User',
-        associationKey: 'admins'
+        defaultValue: []
       }, {
         name: 'contributors',
-        model: 'GSW.model.User',
-        associationKey: 'contributers'
-      }, {
-        name: 'manuscripts',
-        model: 'GSW.model.Manuscript',
-        associationKey: 'manuscripts'
+        defaultValue: []
       }
     ],
     toTreeModel: function() {
       var i, m, manuscrits, root;
       manuscrits = (function() {
         var _i, _len, _ref, _results;
-        _ref = this.get('manuscripts');
+        _ref = this.manuscripts().data.items;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           m = _ref[_i];
@@ -41,7 +34,7 @@
             leaf: false,
             children: (function() {
               var _j, _len1, _ref1, _results1;
-              _ref1 = m.get('images');
+              _ref1 = m.images().data.items;
               _results1 = [];
               for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
                 i = _ref1[_j];
@@ -101,7 +94,7 @@
     },
     statics: {
       fromJSON: function(data) {
-        var admin, admins, con, config, contributors, description, man, manuscripts, name, owner;
+        var admin, admins, con, config, contributors, description, man, manuscripts, name, owner, p, store;
         name = data.name;
         description = data.description;
         owner = GSW.model.User.fromJSON(data.owner);
@@ -140,10 +133,12 @@
           name: name,
           owner: owner,
           admins: admins,
-          contributors: contributors,
-          manuscripts: manuscripts
+          contributors: contributors
         };
-        return new this(config);
+        p = new this(config);
+        store = p.manuscripts();
+        store.add(manuscripts);
+        return p;
       }
     }
   });

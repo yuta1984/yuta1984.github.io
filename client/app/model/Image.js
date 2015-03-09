@@ -27,16 +27,24 @@
         name: 'notes',
         type: 'string',
         defaultValue: ''
+      }, {
+        name: 'manuscriptId',
+        reference: 'Manuscript'
       }
     ],
-    notifyRemote: function(attribute) {
-      var remoteURL, url;
-      remoteURL = GSW.app.getServerURL();
-      url = remoteURL + "images/" + this.get('id');
+    update: function(attr, value) {
+      var params, url;
+      this.set(attr, value);
+      url = this.buildURL() + ".json";
+      params = {};
+      params["image[" + attr + "]"] = value;
       return Ext.Ajax.request({
         method: 'PUT',
         withCredentials: true,
+        cors: true,
+        useDefaultXhrHeader: false,
         url: url,
+        params: params,
         success: function(data) {
           return console.log(data);
         }
@@ -56,6 +64,13 @@
         };
         return new this(config);
       }
+    },
+    buildURL: function() {
+      var manuscriptId, projectId, server;
+      server = GSW.app.getServerURL();
+      manuscriptId = this.manuscript.id;
+      projectId = this.manuscript.project.id;
+      return [server, "projects", projectId, "manuscripts", manuscriptId, "images", this.id].join("/");
     }
   });
 

@@ -11,33 +11,33 @@
         name: 'description',
         type: 'string',
         defaultValue: ''
-      }
-    ],
-    hasMay: [
-      {
-        name: 'images',
-        model: 'GSW.model.Image'
+      }, {
+        name: 'projectId',
+        reference: 'Project'
       }
     ],
     statics: {
       fromJSON: function(data) {
-        var config, img;
+        var config, images, img, m, store;
+        images = data.images ? (function() {
+          var _i, _len, _ref, _results;
+          _ref = data.images;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            img = _ref[_i];
+            _results.push(GSW.model.Image.fromJSON(img));
+          }
+          return _results;
+        })() : [];
         config = {
           id: data._id.$oid,
           title: data.title,
-          description: data.description,
-          images: (function() {
-            var _i, _len, _ref, _results;
-            _ref = data.images;
-            _results = [];
-            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-              img = _ref[_i];
-              _results.push(GSW.model.Image.fromJSON(img));
-            }
-            return _results;
-          })()
+          description: data.description
         };
-        return new this(config);
+        m = new this(config);
+        store = m.images();
+        store.add(images);
+        return m;
       }
     }
   });

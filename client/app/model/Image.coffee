@@ -7,17 +7,23 @@ Ext.define 'GSW.model.Image',
     {name: 'transcription', type: 'string', defaultValue: ''}
     {name: 'translation', type: 'string', defaultValue: ''}
     {name: 'notes', type: 'string', defaultValue: ''}
+    {name: 'manuscriptId', reference: 'Manuscript'}
   ]
 
   
   # FIX THIS!!!
-  notifyRemote: (attribute) ->
-    remoteURL = GSW.app.getServerURL()
-    url = remoteURL + "images/" + @get('id')
+  update: (attr, value) ->
+    @set(attr,value)
+    url = @buildURL() + ".json"
+    params = {}
+    params["image[#{attr}]"] = value
     Ext.Ajax.request
       method: 'PUT'
       withCredentials: true
+      cors: true
+      useDefaultXhrHeader : false
       url: url
+      params: params
       success: (data)->
         console.log data
 
@@ -33,3 +39,8 @@ Ext.define 'GSW.model.Image',
         notes: data.note or ''
       new this(config)
       
+  buildURL: ->
+    server = GSW.app.getServerURL()
+    manuscriptId = @manuscript.id
+    projectId = @manuscript.project.id
+    [server, "projects", projectId, "manuscripts", manuscriptId, "images", @id].join("/")

@@ -157,12 +157,22 @@
         }
         return this.source(text);
       },
+      readyToSave: function() {
+        if (!this.waitingUpdate) {
+          this.waitingUpdate = true;
+          return setTimeout((function(_this) {
+            return function() {
+              _this.saveText();
+              return _this.waitingUpdate = false;
+            };
+          })(this), 3000);
+        }
+      },
       saveText: function() {
         var image, source;
         source = this.getSource();
         image = this.up('transcription-panel').getImage();
-        image.set('transcription', source);
-        return image.notifyRemote('transcription');
+        return image.update('transcription', source);
       },
       buildEditor: function() {
         var iframeId;
@@ -174,7 +184,7 @@
         this.editor.on("element:selected", function() {});
         this.editor.on("change", (function(_this) {
           return function() {
-            return _this.saveText();
+            return _this.readyToSave();
           };
         })(this));
         this.editor.on("contextmenu", (function(_this) {

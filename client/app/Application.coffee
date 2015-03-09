@@ -43,12 +43,11 @@ Ext.define "GSW.Application",
     document.body.appendChild(script)
 
   fetchProject: (callback)->
-    Ext.getBody().mask("Loading...")
-    getParams = document.URL.split("?")
-    params = Ext.urlDecode(getParams[getParams.length - 1])    
+    Ext.getBody().mask("Loading...")    
+    projectId = @getParameterByName("projectId")
     Ext.Ajax.request
       withCredentials: true
-      url: "https://gsweb.herokuapp.com/projects/#{params.projectId}.json"
+      url: "#{@getServerURL()}/projects/#{projectId}.json"
       success: callback
     
   loadProject: (data)->
@@ -64,9 +63,14 @@ Ext.define "GSW.Application",
 
   getServerURL: ->
     if document.URL =~ /localhost/
-      "http://localhost/gsweb/"
+      "http://localhost:3000"
     else
-      "https://gsweb.herokuapp.com/"
+      "https://gsweb.herokuapp.com"
 
+  getParameterByName: (name) ->
+    name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]')
+    regex = new RegExp('[\\?&]' + name + '=([^&#]*)')
+    results = regex.exec(location.search)
+    if results == null then '' else decodeURIComponent(results[1].replace(/\+/g, ' '))
   
 

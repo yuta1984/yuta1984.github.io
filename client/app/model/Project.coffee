@@ -3,27 +3,15 @@ Ext.define 'GSW.model.Project',
   fields: [
     {name: 'title', type: 'string', defaultValue: ''}
     {name: 'description', type: 'string', defaultValue: ''}
+    {name: 'owner'}
+    {name: 'admins', defaultValue: []}
+    {name: 'contributors',  defaultValue: []}
   ]
-
-  hasMany: [
-    name: 'admins'
-    model: 'GSW.model.User'
-    associationKey:'admins'
-  ,
-    name: 'contributors'
-    model: 'GSW.model.User'
-    associationKey:'contributers'
-  ,
-    name: 'manuscripts'
-    model: 'GSW.model.Manuscript'
-    associationKey:'manuscripts'
-  ]
-
   toTreeModel: ->
-    manuscrits = for m in @get('manuscripts')
+    manuscrits = for m in @manuscripts().data.items
       text: m.get('title')
       leaf: false
-      children: for i in m.get('images')
+      children: for i in m.images().data.items
         text: i.get('title')
         leaf: true
         url: i.get('url')
@@ -77,6 +65,7 @@ Ext.define 'GSW.model.Project',
         owner: owner
         admins: admins
         contributors: contributors
-        manuscripts: manuscripts
-      new this(config)
-      
+      p = new this(config)
+      store = p.manuscripts()
+      store.add manuscripts
+      p
