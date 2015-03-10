@@ -114,19 +114,19 @@
             "bundle": true
         },
 	{
-	    "path": "http://code.jquery.com/jquery-2.1.1.min.js",
+	    "path": "resources/js/jquery-2.1.1.min.js",
 	    "bundle": true,
-	    "remote": true
+	    "remote": false
 	},	
 	{
 	    "path": "resources/js/tategaki.js",
 	    "bundle": true,
-	    "remote": true
+	    "remote": false
 	},
 	{
-	    "path": "http://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.8/fabric.min.js",
+	    "path": "resources/js/fabric.min.js",
 	    "bundle": true,
-	    "remote": true
+	    "remote": false
 	},
 	{
 	    "path": "resources/js/fabric_custom_classes.js",
@@ -134,14 +134,14 @@
 	    "remote": false
 	},
 	{
-	    "path": "https://vkbeautify.googlecode.com/files/vkbeautify.0.99.00.beta.js",
+	    "path": "resources/js/vkbeautify.0.99.00.beta.js",
 	    "bundle": true,
-	    "remote": true
+	    "remote": false
 	},
 	{
-	    "path": "http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/highlight.min.js",
+	    "path": "resources/js/highlight.min.js",
 	    "bundle": true,
-	    "remote": true
+	    "remote": false
 	},
 	{
 	    "path": "resources/js/n3-browser.min.js",
@@ -154,9 +154,9 @@
 	    "remote": false
 	},
 	{
-	    "path": "https://togetherjs.com/togetherjs-min.js",
+	    "path": "resources/js/togetherjs-min.js",
 	    "bundle": true,
-	    "remote": true
+	    "remote": false
 	},
 	{
 	    "path": "resources/js/jquery.cloudinary.js",

@@ -33215,7 +33215,7 @@ tr.x-grid-subtable-row {
   background-color: transparent !important;
 }
 /* line 22, ../../../../../sass/src/view/transcription/ImageAnnotationPanel.scss */
-.image-annotation-panel .annotation-comment textarea {
+.image-annotation-panel .annotation-comment textarea, .image-annotation-panel .annotation-comment div {
   background-color: transparent;
   color: white;
   font-size: 14px !important;
@@ -33245,7 +33245,7 @@ tr.x-grid-subtable-row {
 }
 
 /* line 52, ../../../../../sass/src/view/transcription/ImageAnnotationPanel.scss */
-.annotation-button.save {
+.annotation-button.save, .annotation-button.edit {
   -moz-box-shadow: inset 0px 0px 0px 0px #fce2c1;
   -webkit-box-shadow: inset 0px 0px 0px 0px #fce2c1;
   box-shadow: inset 0px 0px 0px 0px #fce2c1;

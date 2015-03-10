@@ -1,12 +1,12 @@
 // @tag full-page
 // @require /Users/yuta/work/yuta1984.github.io/client/app.js
-// @require /Users/yuta/work/yuta1984.github.io/client/http:/code.jquery.com/jquery-2.1.1.min.js
+// @require /Users/yuta/work/yuta1984.github.io/client/resources/js/jquery-2.1.1.min.js
 // @require /Users/yuta/work/yuta1984.github.io/client/resources/js/tategaki.js
-// @require /Users/yuta/work/yuta1984.github.io/client/http:/cdnjs.cloudflare.com/ajax/libs/fabric.js/1.4.8/fabric.min.js
+// @require /Users/yuta/work/yuta1984.github.io/client/resources/js/fabric.min.js
 // @require /Users/yuta/work/yuta1984.github.io/client/resources/js/fabric_custom_classes.js
-// @require /Users/yuta/work/yuta1984.github.io/client/https:/vkbeautify.googlecode.com/files/vkbeautify.0.99.00.beta.js
-// @require /Users/yuta/work/yuta1984.github.io/client/http:/cdnjs.cloudflare.com/ajax/libs/highlight.js/8.2/highlight.min.js
+// @require /Users/yuta/work/yuta1984.github.io/client/resources/js/vkbeautify.0.99.00.beta.js
+// @require /Users/yuta/work/yuta1984.github.io/client/resources/js/highlight.min.js
 // @require /Users/yuta/work/yuta1984.github.io/client/resources/js/n3-browser.min.js
 // @require /Users/yuta/work/yuta1984.github.io/client/resources/js/togetherjs_config.js
-// @require /Users/yuta/work/yuta1984.github.io/client/https:/togetherjs.com/togetherjs-min.js
+// @require /Users/yuta/work/yuta1984.github.io/client/resources/js/togetherjs-min.js
 // @require /Users/yuta/work/yuta1984.github.io/client/resources/js/jquery.cloudinary.js
