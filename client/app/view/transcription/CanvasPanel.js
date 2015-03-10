@@ -2,7 +2,7 @@
 (function() {
   Ext.define('GSW.view.transcription.CanvasPanel', {
     extend: 'Ext.panel.Panel',
-    requires: ['GSW.view.transcription.state.DefaultState', 'GSW.view.transcription.state.DrawingState', 'GSW.view.transcription.state.ImageAnnotationState', 'GSW.view.transcription.SourcePanel', 'GSW.util.XmlFormatter', 'GSW.util.OpenAnnotation'],
+    requires: ['GSW.view.transcription.state.DefaultState', 'GSW.view.transcription.state.DrawingState', 'GSW.view.transcription.state.ImageAnnotationState', 'GSW.view.transcription.state.ImageSelectionState', 'GSW.view.transcription.SourcePanel', 'GSW.util.XmlFormatter', 'GSW.util.OpenAnnotation'],
     xtype: "canvas-panel",
     bodyBorder: false,
     bodyPadding: 0,
@@ -81,7 +81,7 @@
               {
                 text: "Add",
                 handler: function() {
-                  return this.up("canvas-panel").switchState("annotating");
+                  return this.up("canvas-panel").switchState("selection");
                 }
               }, {
                 text: "Remove"
@@ -102,7 +102,12 @@
       this.bindEventListeners();
       this.setupStates();
       this.zoom = 1.0;
-      return this.setZoom(this.zoom);
+      this.setZoom(this.zoom);
+      return setTimeout((function(_this) {
+        return function() {
+          return _this.showRegions();
+        };
+      })(this), 1000);
     },
     setupStates: function() {
       this.currentState = 'default';
@@ -115,8 +120,43 @@
         }),
         annotating: Ext.create('GSW.view.transcription.state.ImageAnnotationState', {
           canvas: this
+        }),
+        selection: Ext.create('GSW.view.transcription.state.ImageSelectionState', {
+          canvas: this
         })
       };
+    },
+    getImageModel: function() {
+      return this.up('transcription-panel').image;
+    },
+    showRegions: function() {
+      var image, model, obj, _i, _j, _len, _len1, _ref, _ref1;
+      _ref = this.c.getObjects();
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        obj = _ref[_i];
+        if ((obj != null ? obj.type : void 0) === 'region') {
+          this.c.remove(obj);
+        }
+      }
+      console.log("adding regions");
+      image = this.getImageModel();
+      _ref1 = image.regions().data.items;
+      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+        model = _ref1[_j];
+        this.showRegion(model);
+      }
+      return this.c.renderAll();
+    },
+    showRegion: function(model) {
+      var region;
+      region = new fabric.Region({
+        canvas: this.c
+      });
+      region.set('left', model.get('x'));
+      region.set('top', model.get('y'));
+      region.set('width', model.get('w'));
+      region.set('height', model.get('h'));
+      return this.c.add(region);
     },
     getState: function() {
       return this.states[this.currentState] || this.states["default"];

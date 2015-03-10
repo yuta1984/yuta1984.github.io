@@ -11,9 +11,10 @@ details.
     extend: "Ext.app.Application",
     name: "GSW",
     appProperty: 'app',
-    stores: ["GSW.store.ResourceStore", "GSW.store.UserStore", "GSW.store.ManuscriptStore", "GSW.store.ImageStore"],
-    models: ["GSW.model.Project", "GSW.model.User", "GSW.model.Manuscript", "GSW.model.Image", "GSW.model.Surface", "GSW.model.Zone", "GSW.model.AbstractAnnotation", "GSW.model.ImageAnnotation", "GSW.model.TextAnnotation"],
+    stores: ["GSW.store.ResourceStore", "GSW.store.UserStore", "GSW.store.ManuscriptStore", "GSW.store.ImageStore", "GSW.store.RegionStore"],
+    models: ["GSW.model.Project", "GSW.model.User", "GSW.model.Manuscript", "GSW.model.Image", "GSW.model.Region", "GSW.model.Surface", "GSW.model.Zone", "GSW.model.AbstractAnnotation", "GSW.model.ImageAnnotation", "GSW.model.TextAnnotation"],
     launch: function() {
+      this.initCloudinary();
       return this.fetchProject((function(_this) {
         return function(data) {
           data = JSON.parse(data.responseText);
@@ -74,6 +75,12 @@ details.
       } else {
         return decodeURIComponent(results[1].replace(/\+/g, ' '));
       }
+    },
+    initCloudinary: function() {
+      return $.cloudinary.config({
+        cloud_name: 'hjnb2gl9b',
+        api_key: '722987842851447'
+      });
     }
   });
 

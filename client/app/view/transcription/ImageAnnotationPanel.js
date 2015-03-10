@@ -19,6 +19,7 @@
       this.model = config.model;
       this.target.on("mouseover", (function(_this) {
         return function() {
+          console.log(_this);
           return _this.showPanel();
         };
       })(this));

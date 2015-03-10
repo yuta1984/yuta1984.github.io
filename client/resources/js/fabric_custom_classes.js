@@ -46,8 +46,10 @@
         stroke: 'black',
         strokeWidth: 1 / ratio,
         fill: 'rgba(0,0,0,0)',
-        left: 0,
-        top: 0,
+        left: options.left,
+        top: options.top,
+        width: options.width,
+        height: options.height,
         originX: 'center',
         originY: 'center'
       });
@@ -57,15 +59,16 @@
         stroke: 'white',
         strokeWidth: 1 / ratio,
         fill: 'rgba(0,0,0,0)',
-        left: 0,
-        top: 0,
-        originX: 'center',
+        left: options.left,
+        top: options.top,
+        width: options.width - 2,
+        height: options.height - 2,
+        originx: 'center',
         originY: 'center'
       });
       this.add(this.rect);
       this.add(this.rectInside);
       this.bindEventListeners();
-      this.canvas.renderAll();
       return this;
     },
     bindEventListeners: function() {
@@ -101,6 +104,87 @@
         scaleY: 1 / this.canvas.getZoom(),
         visible: value
       });
+    },
+    set: function(prop, value) {
+      this.callSuper("set", prop, value);
+      if (this.rect && this.rectInside) {
+        this.rect.set("width", this.get('width'));
+        this.rect.set("height", this.get('height'));
+        this.rectInside.set("width", this.get('width') - 2);
+        this.rectInside.set("height", this.get('height') - 2);
+      }
+      return this;
+    },
+    getRightCenter: function() {
+      return {
+        x: this.getLeft() + this.getWidth(),
+        y: this.getTop() + this.getHeight() / 2
+      };
+    }
+  });
+
+  fabric.Region = fabric.util.createClass(fabric.Group, fabric.Observable, {
+    transparentCorners: false,
+    hasRotatingPoint: false,
+    originX: 'left',
+    originY: 'top',
+    selectable: false,
+    type: 'region',
+    initialize: function(options, callback) {
+      var ratio;
+      if (!(this.canvas = options.canvas)) {
+        throw 'canvas object not given';
+      }
+      this.callSuper('initialize', [], options);
+      ratio = this.canvas.getZoom();
+      this.rect = new fabric.Rect({
+        transparentCorners: false,
+        hasRotatingPoint: false,
+        stroke: 'black',
+        strokeWidth: 1 / ratio,
+        fill: 'rgba(0,0,0,0)',
+        left: 0,
+        top: 0,
+        originX: 'center',
+        originY: 'center'
+      });
+      this.rectInside = new fabric.Rect({
+        transparentCorners: false,
+        hasRotatingPoint: false,
+        stroke: 'white',
+        strokeWidth: 1 / ratio,
+        fill: 'rgba(0,0,0,0)',
+        left: 0,
+        top: 0,
+        originX: 'center',
+        originY: 'center'
+      });
+      this.add(this.rect);
+      this.add(this.rectInside);
+      this.bindEventListeners();
+      return this;
+    },
+    bindEventListeners: function() {
+      this.on("mouseover", (function(_this) {
+        return function() {
+          _this.rectInside.set("stroke", "yellow");
+          return _this.canvas.renderAll();
+        };
+      })(this));
+      this.on("mouseout", (function(_this) {
+        return function() {
+          _this.rectInside.set("stroke", "white");
+          return _this.canvas.renderAll();
+        };
+      })(this));
+      return this.canvas.on("zoom", (function(_this) {
+        return function() {
+          var ratio;
+          ratio = _this.canvas.getZoom();
+          _this.rect.set("strokeWidth", 1 / ratio);
+          return _this.rectInside.set("strokeWidth", 1 / ratio);
+        };
+      })(this));
     },
     set: function(prop, value) {
       this.callSuper("set", prop, value);

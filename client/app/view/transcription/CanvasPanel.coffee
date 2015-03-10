@@ -4,6 +4,7 @@ Ext.define 'GSW.view.transcription.CanvasPanel',
       'GSW.view.transcription.state.DefaultState'
       'GSW.view.transcription.state.DrawingState'
       'GSW.view.transcription.state.ImageAnnotationState'
+      'GSW.view.transcription.state.ImageSelectionState'
       'GSW.view.transcription.SourcePanel'
       'GSW.util.XmlFormatter'
       'GSW.util.OpenAnnotation'] 
@@ -79,7 +80,7 @@ Ext.define 'GSW.view.transcription.CanvasPanel',
         xtye: 'splitbutton'
         menu: [
           text: "Add"
-          handler: -> @up("canvas-panel").switchState "annotating"
+          handler: -> @up("canvas-panel").switchState "selection"
         ,
           text: "Remove"
         ]        
@@ -90,7 +91,7 @@ Ext.define 'GSW.view.transcription.CanvasPanel',
       @setHtml "<canvas id=#{canvasId} width='900' height='900'></canvas>"
       options =
         selection: false
-      @c = new fabric.Canvas(canvasId, options)      
+      @c = new fabric.Canvas(canvasId, options)
       # イベントハンドラ登録
       @bindEventListeners()
       # マウスイベントハンドラの状態遷移クラスを構築
@@ -98,6 +99,9 @@ Ext.define 'GSW.view.transcription.CanvasPanel',
       # ズーム初期化
       @zoom = 1.0
       @setZoom @zoom
+      # FIX THIS!!!!!
+      setTimeout =>@showRegions(),
+      1000
 
     setupStates: ->
       @currentState = 'default'
@@ -105,6 +109,27 @@ Ext.define 'GSW.view.transcription.CanvasPanel',
         default: Ext.create 'GSW.view.transcription.state.DefaultState', canvas: this
         drawing: Ext.create 'GSW.view.transcription.state.DrawingState', canvas: this
         annotating: Ext.create 'GSW.view.transcription.state.ImageAnnotationState', canvas: this
+        selection: Ext.create 'GSW.view.transcription.state.ImageSelectionState', canvas: this
+
+    getImageModel: ->
+      @up('transcription-panel').image
+
+    showRegions: ->
+      for obj in @c.getObjects()
+        @c.remove(obj) if obj?.type is 'region'
+      console.log "adding regions"      
+      image = @getImageModel()
+      for model in image.regions().data.items
+        @showRegion(model)
+      @c.renderAll()
+
+    showRegion: (model)->
+      region = new fabric.Region(canvas: @c)
+      region.set('left', model.get('x'))
+      region.set('top', model.get('y'))
+      region.set('width', model.get('w'))
+      region.set('height', model.get('h'))
+      @c.add(region)
 
     getState: ->
       @states[@currentState] or @states.default
@@ -118,7 +143,8 @@ Ext.define 'GSW.view.transcription.CanvasPanel',
       @switchState("default")
 
     bindEventListeners: ->
-      @c.on "after:render", => @c.calcOffset()        
+      @c.on "after:render", =>
+        @c.calcOffset()
       @c.on "object:moving", (event) =>
       @c.on "object:modified", (event) =>
       @c.on "object:selected", (event) =>

@@ -25,18 +25,16 @@ body {
 }
 
 
-.selected:before {
+.tei-element.selected:before,rt.selected:before {
     content: "[";
     color: red;
-    font-weight: bold;
 }
 
-.selected:after {
+.tei-element.selected:after,rt.selected:after{
     content: "]";
     color: red;
-    font-weight: bold;    
 }
 
 .tei-element.selected {
-    background-color: yellow;
+    background-color: #FFFFCC;
 }

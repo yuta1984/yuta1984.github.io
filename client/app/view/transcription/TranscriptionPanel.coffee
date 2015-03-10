@@ -20,7 +20,9 @@ Ext.define 'GSW.view.transcription.TranscriptionPanel',
     constructor: (config) ->
       @image = config.image
       @image.on "update:image", =>
-        @down("tategaki-editor").reload()
+        @down("tategaki-editor")?.reload()
+      @image.on "create:region", =>
+        @down("canvas-panel")?.showRegions()
       @callParent(arguments)
     
     setBackgroundImg: (url)->

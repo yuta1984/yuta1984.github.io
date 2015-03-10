@@ -17,7 +17,14 @@
       this.image = config.image;
       this.image.on("update:image", (function(_this) {
         return function() {
-          return _this.down("tategaki-editor").reload();
+          var _ref;
+          return (_ref = _this.down("tategaki-editor")) != null ? _ref.reload() : void 0;
+        };
+      })(this));
+      this.image.on("create:region", (function(_this) {
+        return function() {
+          var _ref;
+          return (_ref = _this.down("canvas-panel")) != null ? _ref.showRegions() : void 0;
         };
       })(this));
       return this.callParent(arguments);

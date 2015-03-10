@@ -157,6 +157,11 @@
 	    "path": "https://togetherjs.com/togetherjs-min.js",
 	    "bundle": true,
 	    "remote": true
+	},
+	{
+	    "path": "resources/js/jquery.cloudinary.js",
+	    "bundle": true,
+	    "remote": false
 	}	
     ],
 

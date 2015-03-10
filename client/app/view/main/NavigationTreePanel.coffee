@@ -23,11 +23,13 @@ Ext.define 'GSW.view.main.NavigationTreePanel',
       switch record.data.type
         when 'image'
           tab = Ext.create("GSW.view.transcription.TranscriptionPanel", title: record.data.text, image: record.data.model)
+          console.log record
           tab.setBackgroundImg record.data.url          
         when 'map'
           tab = Ext.create("GSW.view.map.GoogleMapPanel", title: '京都')
       tabpanel = Ext.getCmp("content-tabpanel")
       tabpanel.add tab      
       tabpanel.setActiveTab tab
+      
       
       

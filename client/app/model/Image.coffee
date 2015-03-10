@@ -10,6 +10,18 @@ Ext.define 'GSW.model.Image',
     {name: 'manuscriptId', reference: 'Manuscript'}
   ]
 
+  crop: (x, y, w, h) ->
+    params =
+      x: Math.ceil(x)
+      y: Math.ceil(y)
+      width: Math.ceil(w)
+      height: Math.ceil(h)
+      crop: 'crop'
+    $.cloudinary.url(@getFilename(), params)
+
+  getFilename: ->
+    ary = @get('url').split('/')
+    ary[ary.length-1]
   
   # FIX THIS!!!
   update: (attr, value) ->
@@ -38,6 +50,7 @@ Ext.define 'GSW.model.Image',
 
   statics:
     fromJSON: (data) ->
+      regions = if data.regions then (GSW.model.Region.fromJSON(region) for region in data.regions) else []
       config = 
         id: data._id.$oid
         title: data.title
@@ -47,6 +60,7 @@ Ext.define 'GSW.model.Image',
         translation: data.translation or ''
         notes: data.note or ''
       image = new this(config)
+      image.regions().add(regions)
       Ext.getStore('GSW.store.ImageStore').add image
       image
       
@@ -55,3 +69,6 @@ Ext.define 'GSW.model.Image',
     manuscriptId = @manuscript.id
     projectId = @manuscript.project.id
     [server, "projects", projectId, "manuscripts", manuscriptId, "images", @id].join("/")
+
+
+    

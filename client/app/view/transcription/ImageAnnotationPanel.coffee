@@ -24,6 +24,7 @@ Ext.define 'GSW.view.transcription.ImageAnnotationPanel',
     @canvas = config.canvas
     @model = config.model
     @target.on "mouseover", =>
+      console.log @
       @showPanel()
     @target.on "mouseout", =>      
       @startHideTimer()

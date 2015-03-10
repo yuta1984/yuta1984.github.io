@@ -9,3 +9,4 @@
 // @require /Users/yuta/work/yuta1984.github.io/client/resources/js/n3-browser.min.js
 // @require /Users/yuta/work/yuta1984.github.io/client/resources/js/togetherjs_config.js
 // @require /Users/yuta/work/yuta1984.github.io/client/https:/togetherjs.com/togetherjs-min.js
+// @require /Users/yuta/work/yuta1984.github.io/client/resources/js/jquery.cloudinary.js

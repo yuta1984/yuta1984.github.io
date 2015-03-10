@@ -11,13 +11,15 @@ Ext.define "GSW.Application",
     "GSW.store.ResourceStore"
     "GSW.store.UserStore"
     "GSW.store.ManuscriptStore"
-    "GSW.store.ImageStore"        
+    "GSW.store.ImageStore"
+    "GSW.store.RegionStore"        
   ]
   models: [
     "GSW.model.Project"
     "GSW.model.User"
     "GSW.model.Manuscript"
-    "GSW.model.Image"        
+    "GSW.model.Image"
+    "GSW.model.Region"
     "GSW.model.Surface"
     "GSW.model.Zone"
     "GSW.model.AbstractAnnotation"
@@ -25,12 +27,12 @@ Ext.define "GSW.Application",
     "GSW.model.TextAnnotation"        
   ]
   launch: ->
+    @initCloudinary()
     @fetchProject (data) =>
       data = JSON.parse(data.responseText)
       console.log data
       @loadProject data, =>
         Ext.getBody().unmask()
-
       
     
   loadGoogleMap: ->
@@ -77,4 +79,6 @@ Ext.define "GSW.Application",
     results = regex.exec(location.search)
     if results == null then '' else decodeURIComponent(results[1].replace(/\+/g, ' '))
   
+  initCloudinary: ->
+    $.cloudinary.config(cloud_name: 'hjnb2gl9b', api_key: '722987842851447')
 

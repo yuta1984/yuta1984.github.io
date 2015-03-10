@@ -27,6 +27,7 @@
             title: record.data.text,
             image: record.data.model
           });
+          console.log(record);
           tab.setBackgroundImg(record.data.url);
           break;
         case 'map':

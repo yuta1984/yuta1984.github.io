@@ -32,6 +32,22 @@
         reference: 'Manuscript'
       }
     ],
+    crop: function(x, y, w, h) {
+      var params;
+      params = {
+        x: Math.ceil(x),
+        y: Math.ceil(y),
+        width: Math.ceil(w),
+        height: Math.ceil(h),
+        crop: 'crop'
+      };
+      return $.cloudinary.url(this.getFilename(), params);
+    },
+    getFilename: function() {
+      var ary;
+      ary = this.get('url').split('/');
+      return ary[ary.length - 1];
+    },
     update: function(attr, value) {
       this.set(attr, value);
       this.updateOnServer(attr, value);
@@ -66,7 +82,17 @@
     },
     statics: {
       fromJSON: function(data) {
-        var config, image;
+        var config, image, region, regions;
+        regions = data.regions ? (function() {
+          var _i, _len, _ref, _results;
+          _ref = data.regions;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            region = _ref[_i];
+            _results.push(GSW.model.Region.fromJSON(region));
+          }
+          return _results;
+        })() : [];
         config = {
           id: data._id.$oid,
           title: data.title,
@@ -77,6 +103,7 @@
           notes: data.note || ''
         };
         image = new this(config);
+        image.regions().add(regions);
         Ext.getStore('GSW.store.ImageStore').add(image);
         return image;
       }
