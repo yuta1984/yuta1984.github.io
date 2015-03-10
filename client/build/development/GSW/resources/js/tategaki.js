@@ -26,7 +26,6 @@
     TategakiEditor.prototype.fireEvent = function(event, args) {
       var e, listener, _i, _len, _ref, _results;
       if (this.eventListeners.hasOwnProperty(event)) {
-        try {
           _ref = this.eventListeners[event];
           _results = [];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -34,10 +33,6 @@
             _results.push(listener.call(null, args));
           }
           return _results;
-        } catch (_error) {
-          e = _error;
-          return console.error(e);
-        }
       }
     };
 

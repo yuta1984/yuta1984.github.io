@@ -148,7 +148,7 @@ fabric.Region = fabric.util.createClass fabric.Group, fabric.Observable,
       @canvas.renderAll()
     @on "mouseout", =>
       @rectInside.set "stroke", "white"
-      #@showSpeechBalloon(false)
+      #@showSpeechBalloont(false)
       @canvas.renderAll()
     @canvas.on "zoom", =>
       ratio = @canvas.getZoom()

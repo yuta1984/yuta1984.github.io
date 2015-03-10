@@ -33,7 +33,7 @@ Ext.define "GSW.Application",
       console.log data
       @loadProject data, =>
         Ext.getBody().unmask()
-      
+    @fetchCurrentUser()
     
   loadGoogleMap: ->
     # opts =
@@ -54,6 +54,15 @@ Ext.define "GSW.Application",
       withCredentials: true
       url: "#{@getServerURL()}/projects/#{projectId}.json"
       success: callback
+
+  fetchCurrentUser: (callback) ->
+    Ext.Ajax.request
+      withCredentials: true
+      url: "#{@getServerURL()}/users/me.json"
+      success: (data)=>
+        data = JSON.parse(data.responseText)
+        console.log data
+        GSW.app.me = GSW.model.User.fromJSON(data)
     
   loadProject: (data, callback)->
     # init project

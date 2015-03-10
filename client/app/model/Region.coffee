@@ -10,6 +10,10 @@ Ext.define 'GSW.model.Region',
     {name: 'user_id', reference: 'User'},
   ]
         
+  crop: ->
+    image = @getImage() or @get('image')
+    image.crop(@get('x'),@get('y'),@get('w'),@get('h'))
+
   update: (attr, value) ->
     @set(attr, value)
     @updateOnServer(attr, value)
@@ -25,8 +29,8 @@ Ext.define 'GSW.model.Region',
       "region[w]": @get('w')
       "region[h]": @get('h')
       "region[annotation]": @get('annotation')
-      image_id: @get('image_id')
-      user_id: @get('user_id')
+      "region[image_id]": @get('image_id')
+      "region[user_id]": @get('user_id')
     Ext.Ajax.request
       method: 'POST'
       withCredentials: true
@@ -47,8 +51,9 @@ Ext.define 'GSW.model.Region',
       w: @get('w')
       h: @get('h')
       id: @get('id')
+      annotation: @get('annotation')
       image_id: @image.id
-      user_id: null
+      user_id: GSW.app.me.id
     params = type: "create:region", attrs: attrs
     TogetherJS.send params
 
@@ -81,13 +86,15 @@ Ext.define 'GSW.model.Region',
         h: data.h or 0
         annotation: data.annotation or ""
         image_id: data.image_id or ""
-        user_id: data.user_id or ""
+        user_id: data.user_id.$oid or ""
+        user: Ext.getStore('GSW.store.UserStore').getById(data.user_id)
       region = new this(config)
       Ext.getStore('GSW.store.RegionStore').add region
       region
     
     create: (data) ->
       region = new this(data)
+      region.set('user_id', GSW.app.me.id)
       data.image.regions().add region
       Ext.getStore('GSW.store.RegionStore').add region
       region.createOnServer ->

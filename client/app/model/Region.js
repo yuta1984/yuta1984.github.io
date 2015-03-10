@@ -31,6 +31,11 @@
         reference: 'User'
       }
     ],
+    crop: function() {
+      var image;
+      image = this.getImage() || this.get('image');
+      return image.crop(this.get('x'), this.get('y'), this.get('w'), this.get('h'));
+    },
     update: function(attr, value) {
       this.set(attr, value);
       this.updateOnServer(attr, value);
@@ -47,8 +52,8 @@
         "region[w]": this.get('w'),
         "region[h]": this.get('h'),
         "region[annotation]": this.get('annotation'),
-        image_id: this.get('image_id'),
-        user_id: this.get('user_id')
+        "region[image_id]": this.get('image_id'),
+        "region[user_id]": this.get('user_id')
       };
       return Ext.Ajax.request({
         method: 'POST',
@@ -76,8 +81,9 @@
         w: this.get('w'),
         h: this.get('h'),
         id: this.get('id'),
+        annotation: this.get('annotation'),
         image_id: this.image.id,
-        user_id: null
+        user_id: GSW.app.me.id
       };
       params = {
         type: "create:region",
@@ -123,7 +129,8 @@
           h: data.h || 0,
           annotation: data.annotation || "",
           image_id: data.image_id || "",
-          user_id: data.user_id || ""
+          user_id: data.user_id.$oid || "",
+          user: Ext.getStore('GSW.store.UserStore').getById(data.user_id)
         };
         region = new this(config);
         Ext.getStore('GSW.store.RegionStore').add(region);
@@ -132,6 +139,7 @@
       create: function(data) {
         var region;
         region = new this(data);
+        region.set('user_id', GSW.app.me.id);
         data.image.regions().add(region);
         Ext.getStore('GSW.store.RegionStore').add(region);
         region.createOnServer(function() {

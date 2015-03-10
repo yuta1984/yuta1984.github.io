@@ -1,19 +1,14 @@
 Ext.define 'GSW.view.transcription.form.RubyForm',
   extend: 'GSW.view.transcription.form.AbstractMarkupForm'
   xtype: 'ruby-form'
-  title: 'ルビを追加'
-
+  title: 'Add ruby to text'
+  modal: true
   items: [
-    xtype: 'fieldset'
-    defaultType: 'textfield',
-    defaults: 
-      anchor: '100%'
-    items: [
-      allowBlank: false
-      fieldLabel: 'ルビ文字'
-      name: 'text'
-      emptyText: 'るび' 
-    ]
+    xtype: 'textfield'
+    allowBlank: false
+    fieldLabel: 'Ruby characters'
+    name: 'text'
+    emptyText: 'るび' 
   ]
 
   register: ->

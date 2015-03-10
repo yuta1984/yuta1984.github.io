@@ -28,13 +28,16 @@
       })(this));
       return TogetherJS.hub.on("create:region", (function(_this) {
         return function(data) {
-          var image, image_id, region;
+          var image, image_id, region, user, user_id;
           region = new GSW.model.Region(data.attrs);
           region.id = data.attrs.id;
           _this.add(region);
           image_id = region.get('image_id');
           image = Ext.getStore("GSW.store.ImageStore").getById(image_id);
           image.regions().add(region);
+          user_id = region.get('user_id');
+          user = Ext.getStore("GSW.store.UserStore").getById(user_id);
+          region.setUser(user);
           console.log("new region added", region.getImage());
           return image.fireEvent("create:region", region);
         };

@@ -129,7 +129,17 @@ Ext.define 'GSW.view.transcription.CanvasPanel',
       region.set('top', model.get('y'))
       region.set('width', model.get('w'))
       region.set('height', model.get('h'))
+      region.model = model
+      model.view = region
+      @attatchAnnotationPanel(model)
       @c.add(region)
+
+    attatchAnnotationPanel: (regionModel)->
+      Ext.create 'GSW.view.transcription.ImageAnnotationPanel',
+        target: regionModel.view
+        canvas: @
+        model: regionModel
+      
 
     getState: ->
       @states[@currentState] or @states.default
@@ -153,6 +163,7 @@ Ext.define 'GSW.view.transcription.CanvasPanel',
       @c.on "mouse:move", (event) =>
         @getState().mousemove(event)        
       @c.on "mouse:down", (event) =>
+        console.log event
         @getState().mousedown(event)
       @c.on "mouse:up", (event) =>
         @getState().mouseup(event)
@@ -160,6 +171,7 @@ Ext.define 'GSW.view.transcription.CanvasPanel',
         @getState().mousewheel(event)
       $(@c.wrapperEl).on "mouseout", (event) =>
         @getState().mouseout(event)
+
 
     resize: ->
       @c.setWidth @getWidth()
@@ -208,6 +220,8 @@ Ext.define 'GSW.view.transcription.CanvasPanel',
            surf.append $(obj.model.getTeiText())
       doc.append surf           
       doc[0].outerHTML
+
+    
 
     __getTranscriptionPanel: ->
       @up('transcription-panel').child('tategaki-editor')

@@ -15,7 +15,7 @@ details.
     models: ["GSW.model.Project", "GSW.model.User", "GSW.model.Manuscript", "GSW.model.Image", "GSW.model.Region", "GSW.model.Surface", "GSW.model.Zone", "GSW.model.AbstractAnnotation", "GSW.model.ImageAnnotation", "GSW.model.TextAnnotation"],
     launch: function() {
       this.initCloudinary();
-      return this.fetchProject((function(_this) {
+      this.fetchProject((function(_this) {
         return function(data) {
           data = JSON.parse(data.responseText);
           console.log(data);
@@ -24,6 +24,7 @@ details.
           });
         };
       })(this));
+      return this.fetchCurrentUser();
     },
     loadGoogleMap: function() {
       var script;
@@ -40,6 +41,19 @@ details.
         withCredentials: true,
         url: "" + (this.getServerURL()) + "/projects/" + projectId + ".json",
         success: callback
+      });
+    },
+    fetchCurrentUser: function(callback) {
+      return Ext.Ajax.request({
+        withCredentials: true,
+        url: "" + (this.getServerURL()) + "/users/me.json",
+        success: (function(_this) {
+          return function(data) {
+            data = JSON.parse(data.responseText);
+            console.log(data);
+            return GSW.app.me = GSW.model.User.fromJSON(data);
+          };
+        })(this)
       });
     },
     loadProject: function(data, callback) {

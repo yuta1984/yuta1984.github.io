@@ -156,7 +156,17 @@
       region.set('top', model.get('y'));
       region.set('width', model.get('w'));
       region.set('height', model.get('h'));
+      region.model = model;
+      model.view = region;
+      this.attatchAnnotationPanel(model);
       return this.c.add(region);
+    },
+    attatchAnnotationPanel: function(regionModel) {
+      return Ext.create('GSW.view.transcription.ImageAnnotationPanel', {
+        target: regionModel.view,
+        canvas: this,
+        model: regionModel
+      });
     },
     getState: function() {
       return this.states[this.currentState] || this.states["default"];
@@ -197,6 +207,7 @@
       })(this));
       this.c.on("mouse:down", (function(_this) {
         return function(event) {
+          console.log(event);
           return _this.getState().mousedown(event);
         };
       })(this));

@@ -1,28 +1,23 @@
 Ext.define 'GSW.view.transcription.ImageAnnotationPanel',
   extend: 'Ext.panel.Panel'
+  requires: ['GSW.view.transcription.form.ImageAnnotationForm']
   xtype: 'image-annnotation-panel'
   width: 350
   height: 120
   floating: true
-  html: '''
-    <div class="annotation-comment">
-      <textarea class="annotation-textarea" placeholder="Add a comment (word with leading '#' will be recognized as a tag e.g. #kyoto-school）" ></textarea>
-    </div>
-    <div class="buttons">
-      <a href="#" class="annotation-button save">Save</a>
-      <a href="#" class="annotation-button cancel">Cancel</a>     
-    </div>      
-  '''
   hidden: true
   cls: 'image-annotation-panel'
   style:
     "border-radius": "8px"
     
   constructor: (config) ->
+    console.log "image annotation",config.model
     @callParent(config)
-    @target = config.target
-    @canvas = config.canvas
+    @target = config.model.view
     @model = config.model
+    @canvas = config.canvas
+    user_id = @model.get('user_id')
+    @user = Ext.getStore("GSW.store.UserStore").getById(user_id)    
     @target.on "mouseover", =>
       console.log @
       @showPanel()
@@ -32,26 +27,25 @@ Ext.define 'GSW.view.transcription.ImageAnnotationPanel',
 
   listeners:
     afterrender: (container)->
-      container.getEl().on "click", (e, elem)=>
-        switch elem.className
-          when "annotation-button save"
-            @model.set 'x', @target.getLeft()
-            @model.set 'y', @target.getTop()
-            @model.set 'w', @target.getWidth()
-            @model.set 'h', @target.getHeight()
-            @model.set 'target_uri', @canvas.surf.get('uri')
-            @canvas.surf.get('annotations').push @model
-            container.close()            
-          when "annotation-button cancel"
-            container.canvas.c.remove(container.target)
-            container.canvas.c.renderAll()
-            container.close()
+      return unless @model      
+      @setHtml """
+    <div class="annotation-comment">
+      <p><b>#{@user.get('username')}</b> says:</p> 
+      <div>#{@model.get('annotation')}</div>
+    </div>
+    <div class="buttons">
+      <a href="#" class="annotation-button cancel">Delete</a>
+    </div>      
+      """
 
+            
+          
   startHideTimer: ->
     hidePanel = => @hidePanel()
     @timer = window.setTimeout hidePanel, 500
 
   showPanel: ->
+    return unless @model and @user
     if @timer
       window.clearTimeout @timer
     rightCenter = @target.getRightCenter()
@@ -63,11 +57,15 @@ Ext.define 'GSW.view.transcription.ImageAnnotationPanel',
     el.setOpacity 1, duration: 300, easing: 'ease-in'
     @getEl().hover =>
       window.clearTimeout(@timer) if @timer
-    $(@getEl().query("textarea")[0]).focus()
 
-  hidePanel: ->
+  hidePanel: (callback)->
+    return unless @model and @user
     @getEl().setOpacity 0,
       duration: 300
       easing: 'ease-in'
-      afteranimate: =>
-        @hide()
+      listeners:
+        afteranimate: =>
+          @hide()
+          callback() if callback
+
+

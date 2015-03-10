@@ -3,21 +3,24 @@ Ext.define 'GSW.view.transcription.form.AbstractMarkupForm',
   requires: ['Ext.form.FieldSet']
   xtype: 'abstract-markup-form'
   frame: true
-  title: 'マークアップ'
+  title: 'Markup'
+  modal: true
   autoScroll:true
-  width: 355
+  width: 400
+  bodyPadding: 10
   floating: true
-  closable : true  
+  closable : true
+  layout: 'form'
   fieldDefaults: 
-    labelAlign: 'right'
+    labelAlign: 'left'
     labelWidth: 115
     msgTarget: 'side'
 
   buttons: [
-    text: '登録'
+    text: 'Markup'
     handler: (btn) => btn.up('form').register()
   ,
-    text: 'キャンセル'
+    text: 'Cancel'
     handler: (btn) => btn.up('form').cancel()
   ]
   
@@ -29,4 +32,4 @@ Ext.define 'GSW.view.transcription.form.AbstractMarkupForm',
     @close()
 
   notifySelectionError: ->
-    Ext.Msg.alert 'エラー','マークアップ位置が不正です'
+    Ext.Msg.alert 'Error','Invalid markup position'

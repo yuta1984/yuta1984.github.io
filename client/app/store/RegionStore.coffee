@@ -24,6 +24,9 @@ Ext.define 'GSW.store.RegionStore',
       image_id = region.get('image_id')
       image = Ext.getStore("GSW.store.ImageStore").getById(image_id)
       image.regions().add(region)
+      user_id = region.get('user_id')
+      user = Ext.getStore("GSW.store.UserStore").getById(user_id)
+      region.setUser(user)
       console.log "new region added", region.getImage()
       image.fireEvent "create:region", region
         

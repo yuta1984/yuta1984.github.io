@@ -4,6 +4,7 @@ Ext.define 'GSW.view.transcription.state.ImageSelectionState',
     'GSW.model.ImageAnnotation'
     'GSW.view.transcription.ImageAnnotationPanel'
     'GSW.view.transcription.menu.CanvasContextMenu'
+    'GSW.view.transcription.form.ImageAnnotationForm'
   ]
   Onswitchstate: ->
     @drawMode = false
@@ -41,21 +42,31 @@ Ext.define 'GSW.view.transcription.state.ImageSelectionState',
 
   _onZoneCreated: (event) ->
     @drawMode = false
-    console.log @region.get('left'),@region.get('top'),@region.get('width'),@region.get('height')
-    @_createRegionModel(@region)
-    @region = null
-    @_showMenu(event)    
+    console.log @region
+    model = @_createRegionModel(@region)
+    @canvas.attatchAnnotationPanel(model)
+    @_showAnnotationForm(model)
+    @region = null  
     @canvas.resetState()    
-  _showMenu: (event)->
-    menu = Ext.create("GSW.view.transcription.menu.CanvasContextMenu", canvas: @canvas)
-    menu.showAt event.e.clientX, event.e.clientY
-
+  
   _createRegionModel: (region)->
+    image = @canvas.getImageModel()
     config =
       x: Math.ceil region.get('left')
       y: Math.ceil region.get('top')
       w: Math.ceil region.get('width')
       h: Math.ceil region.get('height')
-      image: @canvas.getImageModel()
-    model = GSW.model.Region.create(config)
+      image: image
+      user: GSW.app.me
+      user_id: GSW.app.me.id
+    model = new GSW.model.Region(config)
+    region.model = model
+    model.view = region
+    image.regions().add model
     model
+
+  _showAnnotationForm: (model)->    
+    form = Ext.create 'GSW.view.transcription.form.ImageAnnotationForm',
+      model: model
+      canvas: @canvas
+    form.show()
