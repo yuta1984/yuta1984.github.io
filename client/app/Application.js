@@ -73,11 +73,7 @@ details.
       return this.project;
     },
     getServerURL: function() {
-      if (document.URL = ~/localhost/) {
-        return "http://localhost:3000";
-      } else {
-        return "https://gsweb.herokuapp.com";
-      }
+      return "https://gsweb.herokuapp.com";
     },
     getParameterByName: function(name) {
       var regex, results;

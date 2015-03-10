@@ -77,9 +77,9 @@ Ext.define "GSW.Application",
     @project
 
   getServerURL: ->
-    if document.URL =~ /localhost/
-      "http://localhost:3000"
-    else
+    # if document.URL =~ /localhost/
+    #   "http://localhost:3000"
+    # else
       "https://gsweb.herokuapp.com"
 
   getParameterByName: (name) ->
