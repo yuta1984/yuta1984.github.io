@@ -14,22 +14,36 @@
 
   convert2Div = function(text) {
     text = text.replace(/\(/g, "（").replace(/\)/g, "）");
-    console.log(text);
     return text.replace(/([一-龠]*)（([ぁ-んァ-ヶゝ]+)）/g, function(match, kanji, ruby) {
       return "<ruby>\n  <rb>" + kanji + "</rb>\n  <rt>" + ruby + "</rt>            \n</ruby>";
     });
   };
 
   init(function(data) {
-    var d, div, line, text, _i, _len, _results;
+    var d, div, lineHtml, loc, locations, num, page, text, _i, _j, _len, _len1, _results;
     div = $("#transcription");
+    locations = {};
     console.log(data);
-    _results = [];
     for (_i = 0, _len = data.length; _i < _len; _i++) {
       d = data[_i];
+      loc = d['場所'];
+      if (!locations[loc]) {
+        locations[loc] = "";
+      }
+    }
+    for (_j = 0, _len1 = data.length; _j < _len1; _j++) {
+      d = data[_j];
+      loc = d['場所'];
       text = convert2Div(d['翻刻文']);
-      line = $("<div>" + text + "</div>");
-      _results.push(div.append(line));
+      num = d['行数'];
+      lineHtml = "<div class='line'>\n  <div class='linenum'>" + num + "</div>\n  <div class='linetext'>" + text + "</div>\n</div>";
+      locations[loc] += lineHtml;
+    }
+    _results = [];
+    for (loc in locations) {
+      text = locations[loc];
+      page = $("<div class='page'><div class='loc'>" + loc + "</div>" + text + "</div>");
+      _results.push(div.append(page));
     }
     return _results;
   });

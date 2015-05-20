@@ -6,7 +6,6 @@ init = (callback)->
 
 convert2Div= (text) ->
   text = text.replace(/\(/g,"（").replace(/\)/g,"）")
-  console.log text
   text.replace /([一-龠]*)（([ぁ-んァ-ヶゝ]+)）/g, (match, kanji, ruby) ->
     """
         <ruby>
@@ -17,11 +16,29 @@ convert2Div= (text) ->
 
 init (data) ->
   div = $("#transcription")
+  locations = {}
   console.log data
-  for d in data    
+  for d in data
+    loc = d['場所']
+    unless locations[loc] 
+      locations[loc] = ""
+
+  for d in data
+    loc = d['場所']
     text = convert2Div(d['翻刻文'])
-    line = $("<div>#{text}</div>")
-    div.append(line)
+    num = d['行数']
+    lineHtml = """
+      <div class='line'>
+        <div class='linenum'>#{num}</div>
+        <div class='linetext'>#{text}</div>
+      </div>
+    """
+    locations[loc] += lineHtml
+
+  for loc, text of locations  
+    page = $("<div class='page'><div class='loc'>#{loc}</div>#{text}</div>")
+    div.append(page)
+
     
 
 
