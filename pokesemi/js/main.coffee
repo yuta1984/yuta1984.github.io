@@ -5,6 +5,8 @@ init = (callback)->
     callback: (data, tabletop) -> callback(data)
 
 convert2Div= (text) ->
+  text = text.replace(/\(/g,"（").replace(/\)/g,"）")
+  console.log text
   text.replace /([一-龠]*)（([ぁ-んァ-ヶゝ]+)）/g, (match, kanji, ruby) ->
     """
         <ruby>

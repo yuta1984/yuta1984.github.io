@@ -13,6 +13,8 @@
   };
 
   convert2Div = function(text) {
+    text = text.replace(/\(/g, "（").replace(/\)/g, "）");
+    console.log(text);
     return text.replace(/([一-龠]*)（([ぁ-んァ-ヶゝ]+)）/g, function(match, kanji, ruby) {
       return "<ruby>\n  <rb>" + kanji + "</rb>\n  <rt>" + ruby + "</rt>            \n</ruby>";
     });
