@@ -6,7 +6,7 @@ init = (callback)->
 
 convert2Div= (text) ->
   text = text.replace(/\(/g,"（").replace(/\)/g,"）")
-  text.replace /([一-龠]*)（([ぁ-んァ-ヶゝ]+)）/g, (match, kanji, ruby) ->
+  text.replace /([一-龠々]*)（([ぁ-んァ-ヶゝ]+)）/g, (match, kanji, ruby) ->
     """
         <ruby>
           <rb>#{kanji}</rb>
