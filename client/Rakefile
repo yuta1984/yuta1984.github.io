@@ -1,7 +1,0 @@
-task :build do
-  `sencha app build`
-end
-
-task :dist do 
-  mv "build/production/GSW", "../"
-end
