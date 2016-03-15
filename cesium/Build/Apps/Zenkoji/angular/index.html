@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
+
+  </head>
+  <body ng-app="zenkoji">
+
+    <div ng-controller="tabCtrl"
+         layout="column" class="demo" >
+
+      <script type="text/ng-template" id="partials/view1.html">  Tab #1 </script>
+      <script type="text/ng-template" id="partials/view2.html">  Tab #2 </script>
+      <script type="text/ng-template" id="partials/view3.html">  Tab #3 </script>
+      <md-toolbar>
+        <h2 class="md-toolbar-tools">
+          <span>Toolbar</span>
+        </h2>
+      </md-toolbar>
+      <md-tabs md-stretch-tabs
+               md-selected="selectedIndex">
+        <md-tab label="tab1"></md-tab>
+        <md-tab label="tab2"></md-tab>
+        <md-tab label="tab3"></md-tab>
+      </md-tabs>
+
+      <div id="content" ui-view flex> </div>
+
+      <!-- Angular Material Dependencies -->
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-animate.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-aria.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js">
+      <script="app.coffee">
+  </body>
+</html>
