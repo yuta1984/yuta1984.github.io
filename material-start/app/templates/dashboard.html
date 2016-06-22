@@ -1,0 +1,72 @@
+<md-toolbar layout="row">
+  <div class="md-toolbar-tools">
+    <span><h1>地震史料翻刻ポータル（仮）</h1></span>
+    <span flex></span>
+    <md-menu md-position-mode="target-right target" >
+      <md-button aria-label="Open demo menu" class="" ng-click="$mdOpenMenu($event)">
+        <md-icon class="material-icons" style="margin: auto 3px auto 0;">perm_identity</md-icon>
+        {{authData.displayName}}
+      </md-button>
+      <md-menu-content width="4" >
+        <md-menu-item>
+          <md-button ng-click="ctrl.announceClick($index)">
+            <div layout="row" flex>
+              <md-icon class="material-icons" style="margin: auto 3px auto 0;">person</md-icon>
+              <p flex>プロフィール設定</p>
+            </div>
+          </md-button>
+        </md-menu-item>        
+        <md-menu-item>
+          <md-button ng-click="ctrl.announceClick($index)">
+            <div layout="row" flex>
+              <md-icon class="material-icons" style="margin: auto 3px auto 0;">list</md-icon>
+              <p flex>マイ資料リスト</p>
+            </div>
+          </md-button>
+        </md-menu-item>        
+
+        <md-divider></md-divider>
+
+        <md-menu-item>
+          <md-button ng-click="ctrl.announceClick($index)">
+            <div layout="row" flex ng-click="logout()">
+              <md-icon class="material-icons" style="margin: auto 3px auto 0;">exit_to_app</md-icon>
+              <p flex>ログアウト</p>
+            </div>
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>    
+  </div>
+</md-toolbar>
+
+
+<md-input-container class="md-icon-float md-block">
+  <!-- Use floating label instead of placeholder -->
+  <label>検索</label>
+  <md-icon aria-label="Menu" class="material-icons">search</md-icon>
+  <input ng-model="keyword" type="text">
+</md-input-container>
+
+
+
+
+
+  <md-content class="md-padding" flex id="content" layout-xs="column" layout="row">
+    
+    <div flex-xs flex-gt-xs="33" layout="column">
+      <div ng-repeat="entry in entries.slice(0,46)" ng-include="'templates/partial/entry_card.html'"></div>
+    </div>
+
+    <div flex-xs flex-gt-xs="33" layout="column">
+      <div ng-repeat="entry in entries.slice(47,92)" ng-include="'templates/partial/entry_card.html'"></div>
+    </div>
+
+    <div flex-xs flex-gt-xs="33" layout="column">
+      <div ng-repeat="entry in entries.slice(93,139)" ng-include="'templates/partial/entry_card.html'"></div>
+    </div>
+
+
+
+  </md-content>
+

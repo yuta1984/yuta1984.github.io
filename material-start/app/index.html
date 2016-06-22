@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <title>古地震史料翻刻ポータル（仮）</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+    <link rel="stylesheet" href="../node_modules/angular-material/angular-material.css"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link  href="../bower_components/viewerjs/dist/viewer.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/app.css"/>
+
+    <style type="text/css">
+     /**
+      * Hide when Angular is not yet loaded and initialized
+      */
+     [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+         display: none !important;
+     }
+    </style>
+
+  </head>
+
+  <body ng-app="seismology" layout="column"  ng-cloak>
+    <div ui-view style="height:90%;">
+    </div>
+
+    <script src="../node_modules/angular/angular.js"></script>
+    <script src="../node_modules/angular-animate/angular-animate.js"></script>
+    <script src="../node_modules/angular-aria/angular-aria.js"></script>
+    <script type="text/javascript" src="../node_modules/angular-material/angular-material.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.15/angular-ui-router.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.4.3/tabletop.min.js"></script>
+    <script src="../bower_components/angular-tabletop/TabletopProvider.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/2.0.1/angularfire.min.js"></script>
+    <script   src="https://code.jquery.com/jquery-3.0.0.min.js"   integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="   crossorigin="anonymous"></script>
+    <script src="../bower_components/viewerjs/dist/viewer.js"></script>
+    <script>
+     // Initialize Firebase
+     var config = {
+         apiKey: "AIzaSyCH_iWQnboGxikkqiQVVo6pV7LJHQRknjM",
+         authDomain: "kojishin-fce4e.firebaseapp.com",
+         databaseURL: "https://kojishin-fce4e.firebaseio.com",
+         storageBucket: "",
+     };
+     firebase.initializeApp(config);
+    </script>
+    
+    <script src="app.js"></script>
+    <script src="./controllers.js"></script>
+    <script src="./services.js"></script>
+    
+
+  </body>
+</html>

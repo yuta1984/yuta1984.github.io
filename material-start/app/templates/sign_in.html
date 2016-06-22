@@ -1,0 +1,30 @@
+<md-toolbar layout="row">
+  <div class="md-toolbar-tools">
+    <span><h1>地震史料翻刻ポータル（仮）</h1></span>
+    <span flex></span>
+
+  </div>
+</md-toolbar>
+
+
+
+<md-content class="md-padding" layout="column" layout-align="center center" layout-fill>
+  <div class="md-whiteframe-z1" layout="column" style="width: 400px; max-width: 90%;">
+    <md-toolbar>
+      <h2 class="md-toolbar-tools">ログイン</h2>      
+    </md-toolbar>
+    <md-content class="md-padding" layout="column">
+      <md-button ng-click="signInWithGoogle()" class="md-warn md-raised">
+        Googleアカウントでログイン
+      </md-button>
+      <md-button ng-click="signInWithFacebook()" class="md-primary md-raised">
+        Facebookアカウントでログイン
+      </md-button>
+      <md-button ng-click="signInWithTwitter()"
+          class="md-raised" style="background-color: #00e5ff; color:white;">
+        Twitterアカウントでログイン
+      </md-button>
+    </md-content>
+  </div>  
+</md-content>
+

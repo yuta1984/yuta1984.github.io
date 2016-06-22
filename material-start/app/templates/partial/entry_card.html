@@ -1,0 +1,42 @@
+<md-card>
+  <img ng-if='entry["画像データ有無"]=="有"' ng-src='../{{entry.thumbnail}}' class="md-card-image">
+  <img ng-if='entry["画像データ有無"]!="有"' ng-src='../resources/img/noimage.png' class="md-card-image">
+  
+  <md-card-title>
+    <md-card-title-text>
+      <span class="md-headline"><b>{{entry['タイトル']}}</b></span>
+      <span class="md-subhead">
+	{{entry['文書番号']}}; {{entry.themes.join(', ')}}; {{entry['著者等']}}
+      </span>
+    </md-card-title-text>
+  </md-card-title>
+  <md-card-actions layout="row" layout-align="start center">
+    <md-card-icon-actions>
+      <md-button class="md-fab md-primary" aria-label="Favorite"
+      ui-sref='transcription({id: entry["暫定ID"]})'>
+	<md-icon aria-label="Menu" class="material-icons">create</md-icon>
+        <md-tooltip md-direction="right">
+          翻刻を開始
+        </md-tooltip>
+      </md-button>
+      <md-button class="md-fab md-warn " aria-label="Share">
+	<md-icon class="material-icons">add</md-icon>
+        <md-tooltip md-direction="right">
+          お気に入りに追加
+        </md-tooltip>
+      </md-button>
+      <md-button class="md-fab " aria-label="Share" ng-click="showBottomSheet()">
+	<md-icon class="material-icons">speaker_notes</md-icon>
+        <md-tooltip md-direction="right">
+          フォーラム
+        </md-tooltip>
+      </md-button>
+    </md-card-icon-actions>
+  </md-card-actions>
+  <md-card-content>
+    <p>
+      <!-- <i class="material-icons">face</i> -->
+      {{entry['備考']}}
+    </p>
+  </md-card-content>
+</md-card>

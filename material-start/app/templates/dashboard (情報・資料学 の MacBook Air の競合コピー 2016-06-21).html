@@ -1,0 +1,43 @@
+<md-toolbar layout="row">
+  <md-button class="menu" aria-label="Show User List">
+    <md-icon md-svg-icon="menu" ></md-icon>
+  </md-button>
+  <h1>古地震研究会{{title}}</h1>
+</md-toolbar>
+
+<div flex layout="row" ng-controller="DashboardCtrl as dash">
+  <md-content flex id="content">
+    <div flex-xs flex-gt-xs="50" layout="column">
+      <md-card style="width: 400px;">
+        <img ng-src="http://wwweic.eri.u-tokyo.ac.jp/dl/cont/01/G0000002erilib/000/012/000012805_ls.jpg" class="md-card-image" alt="Washed Out">
+        <md-card-title>
+          <md-card-title-text>
+	    <span class="md-headline">信濃越後　地震書留</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-actions layout="row" layout-align="start center">
+          <md-card-icon-actions>
+	    <md-button class="md-fab md-primary" aria-label="Favorite">
+	      <md-icon aria-label="Menu" class="material-icons">create</md-icon>
+	    </md-button>
+	    <md-button class="md-icon-button" aria-label="Share">
+	      <md-icon md-svg-icon="img/icons/share-arrow.svg"></md-icon>
+	    </md-button>
+          </md-card-icon-actions>
+          <md-button ng-click="test()">詳細</md-button>
+          <md-button>翻刻</md-button>
+        </md-card-actions>
+        <md-card-content>
+          <p>
+	    <i class="material-icons">face</i>
+	    善光寺地震（弘化4年3月24日）［1847年5月8日］<br/>
+	    小田原地震（嘉永6年2月2日）[1853年3月11日]<br/>
+	    伊賀上野地震（安政元年6月15日）[1854年7月9日]<br/>
+	    安政東南海地震（安政元年11月4,5日）[1854年12月23,24日]<br/>
+	    安政江戸地震（安政2年10月2日）［1855年11月11日］<br/>
+	    飛越地震（安政5年2月26日）［1858年4月9日］
+          </p>
+        </md-card-content>
+      </md-card>
+  </md-content>  
+</div>

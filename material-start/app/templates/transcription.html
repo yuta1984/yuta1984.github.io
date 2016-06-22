@@ -1,0 +1,14 @@
+<div ng-include="'templates/partial/header.html'">
+</div>
+<md-content layout="column">
+  <div>
+    <img style="width:100%;" id="image" src="http://wwweic.eri.u-tokyo.ac.jp/dl/cont/01/G0000002erilib/000/009/000009143.jpg" alt="Picture">
+  </div>
+  <div style="display: none;">
+    <ul id="images">
+      <li ng-repeat="img in images">
+        <img ng-src="http://wwweic.eri.u-tokyo.ac.jp/{{img.ContentPath}}">
+      </li>
+    </ul>
+  </div>
+</md-content>
